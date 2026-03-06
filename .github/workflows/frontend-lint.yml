@@ -1,0 +1,45 @@
+name: Frontend Linting
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-lint.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-lint.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: frontend
+      run: npm ci
+    
+    - name: Run ESLint on all TypeScript files
+      working-directory: frontend
+      run: |
+        npx eslint "src/**/*.{ts,tsx}" --max-warnings 0
+    
+    - name: Report status
+      if: failure()
+      run: |
+        echo "❌ ESLint found linting errors in TypeScript files!"
+        echo "Please fix all linting violations before merging."
+        echo "Run 'npm run lint' in the frontend directory to see details."
+        exit 1

@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\execution\latency_monitor.py
+# hypothesis_version: 6.151.6
+
+[-1.0, 0.0, 0.5, 0.95, 0.99, 1.0, 500.0, 1000.0, 'cpu', 'memory', 'network', 'p50', 'p95', 'p99']

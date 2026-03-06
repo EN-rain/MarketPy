@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\config_manager.py
+# hypothesis_version: 6.151.6
+
+[1.0, 100, 1000, 10000, 86400, '  tier_policies:', ',', '0', '1', '=', 'REALTIME_BURST_SIZE', '_', '_tier_policies_temp', 'batch_window_ms', 'burst_size', 'critical_bypass', 'critical_event_types', 'enable_batching', 'false', 'max_batch_size', 'max_candles', 'no', 'off', 'on', 'r', 'rest_max_backoff_ms', 'retention_seconds', 'slow_client_timeout', 'tier_policies', 'true', 'worker_pool_size', 'yes']

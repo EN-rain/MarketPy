@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\models_analytics.py
+# hypothesis_version: 6.151.6
+
+[100, 404, 500, '/models/analytics', '1h', 'chart', 'filters', 'horizon', 'limit', 'live_preview', 'market_id', 'recent_predictions', 'summary']

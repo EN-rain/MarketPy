@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\ingest\websocket_manager.py
+# hypothesis_version: 6.151.6
+
+[0.0, 1.0, 2.0, 60.0, 100, 'connected', 'connected_since', 'connecting', 'disconnected', 'failed', 'messages_received', 'reconnecting', 'reconnection_count', 'uptime_seconds']

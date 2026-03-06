@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\coindesk_client.py
+# hypothesis_version: 6.151.6
+
+[-1.0, 0.0, 0.001, 1.0, 2.0, 120, 900, ',', '/currentprice.json', 'EUR', 'GBP', 'USD', 'bpi', 'currencies', 'rate_float', 'timestamp']

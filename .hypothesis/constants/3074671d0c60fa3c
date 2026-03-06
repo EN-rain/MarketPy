@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\signals.py
+# hypothesis_version: 6.151.6
+
+[404, '/signals/{market_id}', 'confidence', 'current_ask', 'current_bid', 'current_mid', 'decision', 'edge', 'edge_pct', 'horizon', 'market_id', 'predicted_price', 'predicted_return', 'predictions', 'reason', 'strategy', 'timestamp']

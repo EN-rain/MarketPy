@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\alerts\engine.py
+# hypothesis_version: 6.151.6
+
+['change_24h_pct', 'delivered', 'failed', 'last_trade', 'mid', 'price', 'volatility', 'volume_24h']

@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\portfolio_optimizer.py
+# hypothesis_version: 6.151.6
+
+[-3.0, 0.0, 1.0, 100.0, 252, 'UNKNOWN', 'alpha', 'benchmark', 'concentration_pct', 'current_notional', 'leverage_impact_pct', 'notional', 'notional_delta', 'pnl_pct', 'portfolio', 'projected_notional', 'projected_positions', 'recommendations', 'sharpe_delta', 'symbol', 'underperformers']

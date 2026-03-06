@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\hackernews_client.py
+# hypothesis_version: 6.151.6
+
+[-1.0, 0.0, 1e-09, 0.5, 1.0, 2.0, 300, 1800, ',', '/maxitem.json', '/topstories.json', 'adoption', 'bear', 'bearish', 'bitcoin', 'breakout', 'bull', 'bullish', 'count', 'crash', 'crypto', 'downtrend', 'ethereum', 'growth', 'hack', 'hackernews', 'keywords', 'latest_score', 'mean', 'mean_score', 'negative_count', 'neutral_count', 'positive_count', 'rally', 'scam', 'score', 'selloff', 'stddev', 'timestamp', 'upgrade', 'z_score']

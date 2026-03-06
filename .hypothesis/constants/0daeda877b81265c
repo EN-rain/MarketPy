@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\coingecko_client.py
+# hypothesis_version: 6.151.6
+
+[2.0, ',', '/coins/markets', '/ping', '/simple/price', 'coin_ids', 'gecko_says', 'ids', 'usd', 'vs_currencies', 'vs_currency']

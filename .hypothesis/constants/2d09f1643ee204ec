@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\ml\inference.py
+# hypothesis_version: 6.151.6
+
+[0.0, 0.02, 0.05, 0.2, 0.3, 0.6, 0.7, 1.0, 'Loaded model: %s', 'Model not found: %s', 'buy_threshold', 'calibrator', 'feature_columns', 'model_1d', 'model_1h', 'model_6h', 'models', 'rmse', 'sell_threshold', 'thresholds', 'utf-8', 'weights', 'xgb']

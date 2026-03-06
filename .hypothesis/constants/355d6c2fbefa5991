@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\command_executor.py
+# hypothesis_version: 6.151.6
+
+[0.0, 1000.0, ',', '-inf', '/', '/api/backtest/run', '/api/portfolio', ':', 'Command Executed', 'Command Failed', 'Command executed', 'X-OpenClaw-Signature', 'command_type', 'default', 'error', 'execution_time_ms', 'inf', 'market_id', 'side', 'size', 'strategy_name', 'success', 'user_id', 'utf-8', '✅', '✅ Command executed', '❌', '❌ Command failed']

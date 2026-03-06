@@ -1,0 +1,173 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-8.3.5, pluggy-1.6.0 -- C:\Users\LENOVO\AppData\Local\Programs\Python\Python313\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: C:\Users\LENOVO\Desktop\MarketPy
+configfile: pyproject.toml
+plugins: anyio-4.12.1, hypothesis-6.151.6, asyncio-1.3.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 42 items
+
+backend/tests/test_api.py::TestHealthEndpoint::test_health_check PASSED  [  2%]
+backend/tests/test_api.py::TestStatusEndpoint::test_get_status FAILED    [  4%]
+backend/tests/test_api.py::TestPortfolioEndpoint::test_get_portfolio PASSED [  7%]
+backend/tests/test_api.py::TestMarketEndpoint::test_market_not_found PASSED [  9%]
+backend/tests/test_api.py::TestMarketEndpoint::test_list_markets_empty PASSED [ 11%]
+backend/tests/test_api.py::TestTradesEndpoint::test_get_trades_empty PASSED [ 14%]
+backend/tests/test_api.py::TestSignalsEndpoint::test_signals_not_found PASSED [ 16%]
+backend/tests/test_api.py::TestBacktestEndpoint::test_backtest_request PASSED [ 19%]
+backend/tests/test_fees.py::TestCalculateFee::test_fee_at_midpoint_is_highest PASSED [ 21%]
+backend/tests/test_fees.py::TestCalculateFee::test_fee_symmetry FAILED   [ 23%]
+backend/tests/test_fees.py::TestCalculateFee::test_zero_at_extremes PASSED [ 26%]
+backend/tests/test_fees.py::TestCalculateFee::test_positive_fee PASSED   [ 28%]
+backend/tests/test_fees.py::TestCalculateFee::test_fee_scales_with_size PASSED [ 30%]
+backend/tests/test_fees.py::TestCalculateFee::test_known_value PASSED    [ 33%]
+backend/tests/test_fees.py::TestCalculateFeePct::test_pct_at_midpoint PASSED [ 35%]
+backend/tests/test_fees.py::TestCalculateFeePct::test_pct_zero_at_extremes PASSED [ 38%]
+backend/tests/test_fees.py::TestBreakevenEdge::test_positive_breakeven PASSED [ 40%]
+backend/tests/test_fees.py::TestBreakevenEdge::test_wider_spread_higher_breakeven PASSED [ 42%]
+backend/tests/test_fill_model.py::TestFillModelM1::test_buy_fills_at_mid PASSED [ 45%]
+backend/tests/test_fill_model.py::TestFillModelM1::test_sell_fills_at_mid PASSED [ 47%]
+backend/tests/test_fill_model.py::TestFillModelM1::test_empty_orderbook_no_fill PASSED [ 50%]
+backend/tests/test_fill_model.py::TestFillModelM2::test_buy_fills_at_ask PASSED [ 52%]
+backend/tests/test_fill_model.py::TestFillModelM2::test_sell_fills_at_bid PASSED [ 54%]
+backend/tests/test_fill_model.py::TestFillModelM2::test_slippage_is_positive PASSED [ 57%]
+backend/tests/test_fill_model.py::TestFillModelM2::test_limit_buy_not_filled PASSED [ 59%]
+backend/tests/test_fill_model.py::TestFillModelM2::test_limit_buy_filled PASSED [ 61%]
+backend/tests/test_fill_model.py::TestFillModelM2::test_limit_sell_not_filled PASSED [ 64%]
+backend/tests/test_fill_model.py::TestFillModelM2::test_fee_is_deducted PASSED [ 66%]
+backend/tests/test_fill_model.py::TestFillOrderDispatch::test_m1_dispatch PASSED [ 69%]
+backend/tests/test_fill_model.py::TestFillOrderDispatch::test_m2_dispatch PASSED [ 71%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_initial_state PASSED [ 73%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_buy_creates_position PASSED [ 76%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_sell_closes_position PASSED [ 78%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_fees_tracked PASSED [ 80%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_mark_to_market PASSED [ 83%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_drawdown_tracking PASSED [ 85%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_average_entry_price PASSED [ 88%]
+backend/tests/test_portfolio.py::TestPortfolioManager::test_daily_loss_limit PASSED [ 90%]
+backend/tests/test_sim_integration.py::TestSimEngineIntegration::test_momentum_backtest PASSED [ 92%]
+backend/tests/test_sim_integration.py::TestSimEngineIntegration::test_mean_reversion_backtest PASSED [ 95%]
+backend/tests/test_sim_integration.py::TestSimEngineIntegration::test_fees_reduce_performance PASSED [ 97%]
+backend/tests/test_sim_integration.py::TestSimEngineIntegration::test_multi_market PASSED [100%]
+
+================================== FAILURES ===================================
+_____________________ TestStatusEndpoint.test_get_status ______________________
+
+self = <starlette.datastructures.State object at 0x00000118D760D940>
+key = 'app_state'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+>           return self._state[key]
+E           KeyError: 'app_state'
+
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\datastructures.py:685: KeyError
+
+During handling of the above exception, another exception occurred:
+
+self = <backend.tests.test_api.TestStatusEndpoint object at 0x00000118D76A9BD0>
+client = <starlette.testclient.TestClient object at 0x00000118D7718190>
+
+    def test_get_status(self, client):
+>       resp = client.get("/api/status")
+
+backend\tests\test_api.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\testclient.py:473: in get
+    return super().get(
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\httpx\_client.py:1053: in get
+    return self.request(
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\testclient.py:445: in request
+    return super().request(
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\httpx\_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\testclient.py:348: in handle_request
+    raise exc
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\testclient.py:345: in handle_request
+    portal.call(self.app, scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+..\..\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+..\..\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\applications.py:1160: in __call__
+    await super().__call__(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\middleware\cors.py:87: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py:130: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py:116: in app
+    response = await f(request)
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py:670: in app
+    raw_response = await run_endpoint_function(
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\fastapi\routing.py:324: in run_endpoint_function
+    return await dependant.call(**values)
+backend\app\routers\status.py:15: in get_status
+    state = request.app.state.app_state
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <starlette.datastructures.State object at 0x00000118D760D940>
+key = 'app_state'
+
+    def __getattr__(self, key: Any) -> Any:
+        try:
+            return self._state[key]
+        except KeyError:
+            message = "'{}' object has no attribute '{}'"
+>           raise AttributeError(message.format(self.__class__.__name__, key))
+E           AttributeError: 'State' object has no attribute 'app_state'
+
+..\..\AppData\Local\Programs\Python\Python313\Lib\site-packages\starlette\datastructures.py:688: AttributeError
+_____________________ TestCalculateFee.test_fee_symmetry ______________________
+
+self = <backend.tests.test_fees.TestCalculateFee object at 0x00000118D76AA350>
+
+    def test_fee_symmetry(self):
+        """Fee should be symmetric around 0.5."""
+        fee_30 = calculate_fee(0.3, 100)
+        fee_70 = calculate_fee(0.7, 100)
+>       assert abs(fee_30 - fee_70) < 1e-10
+E       assert 0.03528000000000002 < 1e-10
+E        +  where 0.03528000000000002 = abs((0.026459999999999994 - 0.06174000000000002))
+
+backend\tests\test_fees.py:21: AssertionError
+=========================== short test summary info ===========================
+FAILED backend/tests/test_api.py::TestStatusEndpoint::test_get_status - Attri...
+FAILED backend/tests/test_fees.py::TestCalculateFee::test_fee_symmetry - asse...
+======================== 2 failed, 40 passed in 3.20s =========================

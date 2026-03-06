@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\strategies\freqtrade_interface.py
+# hypothesis_version: 6.151.6
+
+[-0.1, 0.01, '0', '1m', 'candle', 'close', 'enter_long', 'example_sma', 'exit_long', 'freqtrade_strategy', 'populate_entry_trend', 'populate_exit_trend', 'populate_indicators', 'sma_fast', 'sma_slow']

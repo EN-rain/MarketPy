@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\market.py
+# hypothesis_version: 6.151.6
+
+[0.0, 0.002, 0.999, 1.001, 404, '/market/{market_id}', '/markets', '/markets/status', '/markets/stop-stream', '1h', 'ADA', 'AVAX', 'Avalanche', 'BTC', 'Bitcoin', 'Cardano', 'Chainlink', 'DOT', 'ETH', 'Ethereum', 'LINK', 'MATIC', 'Polkadot', 'Polygon', 'SOL', 'Solana', 'USDT', 'active', 'already_running', 'ask', 'bid', 'binance_client', 'candles', 'change_24h', 'change_24h_pct', 'close', 'event_count', 'high', 'high_24h', 'is_running', 'last_trade_price', 'last_update', 'low', 'low_24h', 'market_id', 'markets', 'mid', 'open', 'price', 'question', 'spread', 'started', 'status', 'stopped', 'symbol', 'symbols', 'symbols_tracked', 'timestamp', 'updated_at', 'volume', 'volume_24h']

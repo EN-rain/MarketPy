@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\paper_trading\engine.py
+# hypothesis_version: 6.151.6
+
+[0.0, 0.02, 0.9999, 1.0001, 10000.0, 'HOLD', 'M2', 'cash', 'confidence', 'current_mid', 'data', 'decision', 'edge', 'edge_pct', 'fee', 'is_running', 'last_signals', 'market_count', 'market_id', 'max_drawdown', 'name', 'on_bar', 'pnl', 'portfolio', 'positions_count', 'predicted_price', 'price', 'question', 'realized_pnl', 'reason', 'side', 'signal', 'signal_count', 'size', 'strategy', 'timestamp', 'total_equity', 'total_pnl', 'total_pnl_pct', 'trade', 'trade_count', 'trades_count', 'type', 'unrealized_pnl']

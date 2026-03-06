@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\observability.py
+# hypothesis_version: 6.151.6
+
+[1.0, ',', ':', 'component', 'correlation_id', 'counters', 'gauges', 'level', 'message', 'stack_trace', 'timestamp']

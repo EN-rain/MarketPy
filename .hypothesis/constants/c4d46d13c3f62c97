@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\ml\trainer.py
+# hypothesis_version: 6.151.6
+
+[-1000000000.0, 0.0, 1e-12, 1e-09, 1e-06, 0.05, 0.1, 0.2, 0.6, 0.8, 1.0, 1.5, 100, 288, 500, '  Saved: %s', ',', '--data-path', '--output-dir', 'Loaded %s bars', 'Loading data from %s', '__main__', 'buy_threshold', 'calibration_rmse', 'calibrator', 'candidates', 'catboost', 'clip', 'directional_accuracy', 'embargo_bars', 'feature_columns', 'feature_hash', 'lgbm', 'mae', 'model', 'model_candidates', 'model_name', 'models', 'objective', 'r2', 'rmse', 'row_count', 'sell_threshold', 'target', 'target_col', 'test_size', 'thresholds', 'train_size', 'trained_at', 'utf-8', 'val_rmse', 'val_size', 'weight', 'weights', 'xgb', 'y_1d', 'y_1h', 'y_6h']

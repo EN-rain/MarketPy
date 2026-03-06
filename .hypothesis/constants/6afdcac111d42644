@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\scripts\check_duplicate_dataclasses.py
+# hypothesis_version: 6.151.6
+
+['*.py', '.git', '.hypothesis', '.pytest_cache', '.ruff_cache', '.venv', '__main__', '__pycache__', 'dataclass', 'frontend', 'marketpy.egg-info', 'node_modules', 'r', 'utf-8', 'venv']

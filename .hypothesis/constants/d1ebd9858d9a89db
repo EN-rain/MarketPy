@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\paper_trading\live_feed.py
+# hypothesis_version: 6.151.6
+
+[30.0, -200, 100, 1000, '%Y%m%d', '+00:00', 'E', 'Live feed stopped', 'Z', '_recorded_at', 'a', 'ask', 'asks', 'asset_id', 'asset_ids', 'assets_ids', 'best_ask', 'best_bid', 'best_bid_ask', 'bid', 'bids', 'book', 'condition_id', 'data/live', 'event_timestamp', 'event_ts', 'event_type', 'last_trade_price', 'market', 'mid', 'ping', 'price', 'time', 'timestamp', 'timestamp_ms', 'ts', 'type', 'unknown', 'utf-8', 'volume']

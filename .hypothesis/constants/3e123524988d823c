@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\alerts\models.py
+# hypothesis_version: 6.151.6
+
+['CROSSES_ABOVE', 'CROSSES_BELOW', 'EQ', 'GT', 'LT', 'PRICE', 'VOLATILITY', 'VOLUME', 'webhook']

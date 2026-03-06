@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\discord_client.py
+# hypothesis_version: 6.151.6
+
+[0.25, 2.0, 5.0, 100, 400, 429, 500, 'content', 'embeds', 'price', 'qty', 'quantity', 'side', 'symbol', 'timestamp', 'trade_id', 'unknown']

@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\backtest.py
+# hypothesis_version: 6.151.6
+
+[0.0, 0.001, 0.01, 0.02, 0.5, 2.0, 100.0, 10000.0, 400, 401, 404, 429, '+00:00', '/backtest/run', '5m', 'Invalid API key', 'M2', 'Z', 'action', 'ai', 'ai_predictor', 'ask', 'bars.parquet', 'bid', 'cash', 'close', 'drawdown', 'duration_bars', 'edge', 'engine', 'entries', 'errors', 'event_driven', 'execution_mode', 'execution_ms', 'exits', 'fee', 'high', 'id', 'instant', 'isoformat', 'low', 'market_id', 'markets_processed', 'mean_reversion', 'mid', 'momentum', 'open', 'orders_filled', 'orders_submitted', 'parquet', 'pnl', 'positions_value', 'price', 'profit_factor', 'records', 'size', 'spread', 'strategy', 'timestamp', 'total_equity', 'trade_count', 'unknown', 'vectorized', 'volume']

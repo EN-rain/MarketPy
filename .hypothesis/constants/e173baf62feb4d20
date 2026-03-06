@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\config.py
+# hypothesis_version: 6.151.6
+
+[2.0, 5.0, 10.0, 20.0, 100000.0, 100, 300, 4096, '\n- ', '!', '***', ',', '.', '1', 'INFO', 'OPENCLAW_DATA_DIR', 'OPENCLAW_ENVIRONMENT', 'OPENCLAW_LOG_FILE', 'OPENCLAW_LOG_LEVEL', 'OPENCLAW_SKILLS_DIR', 'admin_channel', 'api_key', 'authorized_users', 'backups', 'base_url', 'bot_token', 'command_channels', 'command_prefix', 'conditions', 'config/openclaw.json', 'contexts', 'data/openclaw', 'data_dir', 'development', 'discord', 'environment', 'kimi_k2', 'log_file', 'log_level', 'marketpy_base_url', 'max_concurrent_calls', 'max_concurrent_users', 'max_daily_loss_pct', 'max_open_positions', 'max_order_size', 'max_queue_size', 'max_tokens', 'model', 'monitoring', 'moonshot-v1-8k', 'on', 'openclaw.config', 'performance', 'preferences', 'risk_limits', 'security', 'signing_secret', 'skills_dir', 'timeout_seconds', 'true', 'utf-8', 'yes']

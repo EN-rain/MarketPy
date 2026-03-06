@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\discord_bridge.py
+# hypothesis_version: 6.151.6
+
+['API Error', 'Authorization', 'Parsing Error', 'Permission denied', 'Risk Violation', 'allowed', 'channel_id', 'content', 'description', 'embeds', 'error', 'fields', 'inline', 'name', 'reactions', 'reason', 'timestamp', 'title', 'user_id', 'value']

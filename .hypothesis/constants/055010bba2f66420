@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\dataset\features.py
+# hypothesis_version: 6.151.6
+
+[0.0, 1e-06, 50.0, 100.0, 100, 288, 'ask', 'bid', 'close', 'day_of_week', 'high', 'hour_of_day', 'low', 'macd', 'macd_hist', 'macd_signal', 'mid', 'open', 'ret_1', 'spread', 'spread_current', 'spread_pct', 'time_to_close', 'timestamp', 'token_id', 'trade_count', 'volume', 'y_1d', 'y_1h', 'y_6h']

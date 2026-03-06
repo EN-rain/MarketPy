@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\ml\prediction_tracker.py
+# hypothesis_version: 6.151.6
+
+[0.0, 0.5, 0.55, 0.9, 1.0, 1.5, 2.0, 120, 1000, 3000, '1d', '1h', '6h', 'abs_error', 'actual', 'actual_direction', 'actual_price', 'base_price', 'correct_direction', 'current_price', 'directional_accuracy', 'due_ts', 'error_pct', 'horizon', 'market_id', 'mean_error_pct', 'pending_predictions', 'predicted', 'predicted_direction', 'predicted_price', 'provisional_error', 'resolved_predictions', 'resolved_ts', 'signal_ts', 't']

@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\execution\slippage_tracker.py
+# hypothesis_version: 6.151.6
+
+[-1.0, 0.0, 1.0, 20.0, 10000.0, 'SELL', 'large', 'medium', 'small', 'spread', 'volatility', 'volume']

@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\ingest\exchange_client.py
+# hypothesis_version: 6.151.6
+
+[0.0, 1.0, 2.0, 100, 1000, 1200, 30000, ',', '/', '1', '1.0', '1200', '1h', '3', '30000', ':', 'BTC', 'BUSD', 'ETH', 'EUR', 'EXCHANGE_MAX_RETRIES', 'EXCHANGE_RATE_LIMIT', 'EXCHANGE_TIMEOUT_MS', 'ExchangeConfig', 'USD', 'USDC', 'USDT', 'apiKey', 'asks', 'avg_latency_ms', 'bids', 'binance', 'close', 'coinbase', 'correlation_id', 'count', 'duration_ms', 'enableRateLimit', 'enable_rate_limit', 'endpoint', 'error', 'error_count', 'error_rate', 'exchange', 'fetch_ohlcv', 'fetch_order_book', 'fetch_ticker', 'fetch_time', 'fetch_trades', 'kraken', 'ok', 'on', 'password', 'rateLimit', 'rate_limit', 'secret', 'status', 'symbol', 'timeout', 'timeout_ms', 'timestamp', 'true', 'yes']

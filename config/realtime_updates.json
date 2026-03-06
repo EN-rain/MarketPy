@@ -1,0 +1,30 @@
+{
+  "batch_window_ms": 100,
+  "max_batch_size": 50,
+  "enable_batching": true,
+  "max_messages_per_second": 10,
+  "burst_size": 20,
+  "critical_bypass": true,
+  "price_change_threshold": 0.02,
+  "volume_spike_multiplier": 3.0,
+  "critical_event_types": [
+    "order_fill",
+    "trade_execution"
+  ],
+  "max_candles_per_market": 1000,
+  "retention_seconds": 86400,
+  "send_buffer_threshold": 65536,
+  "slow_client_timeout": 30,
+  "drop_non_critical_for_slow": true,
+  "worker_pool_size": 10,
+  "max_concurrent_markets": 100,
+  "min_signal_cooldown_seconds": 1.0,
+  "max_signal_cooldown_seconds": 30.0,
+  "volatility_window_seconds": 300,
+  "volatility_threshold_low": 0.005,
+  "volatility_threshold_high": 0.03,
+  "ws_connected_poll_interval_ms": 10000,
+  "ws_disconnected_poll_interval_ms": 2000,
+  "rest_backoff_multiplier": 1.5,
+  "rest_max_backoff_ms": 30000
+}

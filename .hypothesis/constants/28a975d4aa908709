@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\models\config.py
+# hypothesis_version: 6.151.6
+
+[0.01, 0.02, 0.1, 0.5, 2.0, 500.0, 1000.0, 5000.0, 10000.0, 3000, 8000, '.env', '1d', '1h', '5m', '6h', 'M1', 'M2', 'backtest', 'data', 'env_file', 'env_file_encoding', 'models', 'momentum', 'paper', 'utf-8']

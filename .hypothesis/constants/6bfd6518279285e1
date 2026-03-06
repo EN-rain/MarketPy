@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\main.py
+# hypothesis_version: 6.151.6
+
+[5.0, '*', '/api', '/ws/live', '0.1.0', 'Backtest', 'Health', 'Market', 'Models', 'Paper Trading', 'Portfolio', 'Signals', 'Status', 'Trades', 'ask', 'backpressure_handler', 'bid', 'btc-bitcoin', 'change_24h_pct', 'client_id', 'config_manager', 'connected', 'connected_markets', 'connection_manager', 'data', 'eth-ethereum', 'get_status', 'health_monitor', 'is_running', 'market', 'market_id', 'market_update', 'memory_manager', 'message', 'mode', 'ping', 'pong', 'price', 'rate_limiter', 'sol-solana', 'status_update', 'subscribe_market', 'subscribed', 'symbol', 'task_manager', 'timestamp', 'type', 'volume_24h']

@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\dataset\indicators.py
+# hypothesis_version: 6.151.6
+
+[-100.0, 0.0, 0.015, 1.0, 2.0, 3.0, 100.0, 100, 200, 288, 'ad', 'adx_14', 'atr_14', 'atr_21', 'auto', 'bbands_lower', 'bbands_middle', 'bbands_upper', 'bbands_width', 'cci_14', 'cci_20', 'close', 'close_to_high', 'close_to_low', 'donchian_lower', 'donchian_middle', 'donchian_upper', 'ema_100', 'ema_12', 'ema_21', 'ema_26', 'ema_50', 'ema_8', 'high', 'hl_range', 'keltner_lower', 'keltner_middle', 'keltner_upper', 'low', 'macd', 'macd_hist', 'macd_signal', 'mfi_14', 'mom_10', 'mom_20', 'obv', 'open', 'pandas_ta', 'price_change_1h', 'price_change_24h', 'price_change_4h', 'pta_macd', 'pta_rsi_14', 'roc_12', 'roc_5', 'rsi_14', 'rsi_21', 'rsi_7', 'sma_10', 'sma_100', 'sma_20', 'sma_200', 'sma_50', 'stoch_d', 'stoch_k', 'ta', 'ta_rsi_14', 'timestamp', 'volatility_12', 'volatility_48', 'volume', 'volume_change_1h', 'volume_change_24h', 'vwap', 'williams_r_14', 'wma_20']

@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\realtime\backpressure_handler.py
+# hypothesis_version: 6.151.6
+
+[0.1, 1.0, 'dropped_messages', 'is_slow', 'last_error', 'marked_slow_at']

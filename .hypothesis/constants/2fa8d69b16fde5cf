@@ -1,0 +1,4 @@
+# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\models\signal.py
+# hypothesis_version: 6.151.6
+
+[0.0, 100, '1d', '1h', '6h', 'BUY', 'HOLD', 'SELL', 'ai']
