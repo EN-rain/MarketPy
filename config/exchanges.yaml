@@ -1,0 +1,14 @@
+binance:
+  api_url: https://api.binance.com
+  ws_url: wss://stream.binance.com:9443/stream
+  enable_rate_limit: true
+  rate_limit: 1200
+  timeout_ms: 30000
+coinbase:
+  api_url: https://api.exchange.coinbase.com
+  ws_url: wss://ws-feed.exchange.coinbase.com
+  timeout_ms: 30000
+kraken:
+  api_url: https://api.kraken.com
+  ws_url: wss://ws.kraken.com
+  timeout_ms: 30000

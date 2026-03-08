@@ -1,0 +1,49 @@
+{
+  "environment": "development",
+  "data_dir": "data/openclaw",
+  "log_level": "INFO",
+  "log_file": "data/openclaw/openclaw.log",
+  "marketpy_base_url": "http://localhost:8000",
+  "skills_dir": "backend/app/openclaw/skills",
+  "discord": {
+    "bot_token": "",
+    "command_prefix": "!",
+    "authorized_users": [],
+    "admin_channel": "",
+    "command_channels": []
+  },
+  "kimi_k2": {
+    "api_key": "",
+    "base_url": "https://api.moonshot.cn/v1",
+    "model": "moonshot-v1-8k",
+    "max_tokens": 4096,
+    "timeout_seconds": 30,
+    "rate_limit_per_minute": 60,
+    "max_concurrent_calls": 5
+  },
+  "monitoring": {
+    "market_monitor_interval_seconds": 60,
+    "risk_monitor_interval_seconds": 60,
+    "context_backup_interval_seconds": 300
+  },
+  "risk_limits": {
+    "max_position_size_pct": 20.0,
+    "max_daily_loss_pct": 5.0,
+    "max_open_positions": 10,
+    "min_trade_interval_seconds": 60,
+    "max_order_size": 100000.0
+  },
+  "performance": {
+    "max_concurrent_users": 10,
+    "command_timeout_seconds": 30,
+    "max_queue_size": 100,
+    "simple_command_sla_seconds": 2.0,
+    "complex_command_sla_seconds": 10.0
+  },
+  "security": {
+    "context_encryption_key": "",
+    "per_user_rate_limit_per_minute": 30,
+    "enable_request_signing": false,
+    "signing_secret": ""
+  }
+}

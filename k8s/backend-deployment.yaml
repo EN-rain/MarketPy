@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketpy-backend
+  labels:
+    app: marketpy-backend
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: marketpy-backend
+  template:
+    metadata:
+      labels:
+        app: marketpy-backend
+    spec:
+      containers:
+      - name: backend
+        image: marketpy/backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SECURITY_ENABLE_AUTH
+          value: "true"
+        - name: SECURITY_REQUIRE_HTTPS
+          value: "true"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "2"
+            memory: "2Gi"
