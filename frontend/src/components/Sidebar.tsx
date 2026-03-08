@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import {
   Activity,
   BarChart3,
+  Bot,
   BrainCircuit,
   ChevronRight,
   Database,
@@ -24,6 +25,7 @@ const links = [
   { href: '/', label: 'Overview', icon: BarChart3, badge: 'CORE' },
   { href: '/markets', label: 'Markets', icon: Activity, badge: 'LIVE' },
   { href: '/paper', label: 'Paper Trading', icon: Zap, badge: 'SIM' },
+  { href: '/autonomous', label: 'Autonomous AI', icon: Bot, badge: 'AUTO' },
   { href: '/backtests', label: 'Backtests', icon: LineChart, badge: 'LAB' },
   { href: '/models', label: 'Models', icon: BrainCircuit, badge: 'ML' },
   { href: '/data', label: 'Data', icon: Database, badge: 'OPS' },
