@@ -57,6 +57,10 @@ models/*.onnx
 *.sublime-project
 *.sublime-workspace
 
+# Kiro Agent
+.agent/
+.kiro/
+
 # Node / Frontend
 node_modules/
 .next/
