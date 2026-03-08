@@ -30,6 +30,7 @@ from backend.app.realtime.memory_manager import MemoryManager
 from backend.app.realtime.rate_limiter import RateLimiter
 from backend.app.realtime.task_manager import BoundedTaskManager, TaskManagerConfig
 from backend.app.routers import (
+    autonomous,
     backtest,
     health,
     market,
@@ -426,6 +427,7 @@ def create_app(config: AppConfig | None = None) -> FastAPI:
     app.include_router(trades.router, prefix="/api", tags=["Trades"])
     app.include_router(backtest.router, prefix="/api", tags=["Backtest"])
     app.include_router(paper_trading.router, prefix="/api", tags=["Paper Trading"])
+    app.include_router(autonomous.router, prefix="/api", tags=["Autonomous Trading"])
     app.include_router(security.router, prefix="/api", tags=["Security"])
     app.include_router(health.router, prefix="/api", tags=["Health"])
 

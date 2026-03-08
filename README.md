@@ -50,6 +50,7 @@ Both servers run together and stop with `Ctrl+C`.
 
 ### 🎯 Core Capabilities
 
+- **🤖 Autonomous AI Trading** - Fully automated trading with ML models (NEW!)
 - **Backtesting Engine** - Vectorized simulation with realistic fill models and slippage
 - **Paper Trading** - Live trading simulation with real market data
 - **Real-time Monitoring** - WebSocket-based live updates and dashboards
@@ -329,6 +330,11 @@ See [docs/configuration.md](docs/configuration.md) for details.
 | `/api/backtest/run` | POST | Execute backtest |
 | `/api/backtest/capabilities` | GET | Available strategies and modes |
 | `/api/paper-trading/risk-status` | GET | Risk limit status |
+| `/api/autonomous/start` | POST | Start autonomous AI trading |
+| `/api/autonomous/stop` | POST | Stop autonomous trading |
+| `/api/autonomous/status` | GET | Autonomous trading status |
+| `/api/autonomous/stats` | GET | Autonomous trading statistics |
+| `/api/autonomous/portfolio` | GET | Autonomous trading portfolio |
 | `/api/models/{id}/feature_importance` | GET | Model feature importance |
 | `/api/health/summary` | GET | System health snapshot |
 | `/api/data/health` | GET | Data quality metrics |
@@ -370,6 +376,130 @@ See [docs/configuration.md](docs/configuration.md) for details.
 - `alerts_update` - Active alerts
 
 See [docs/api-documentation.md](docs/api-documentation.md) for complete API reference.
+
+---
+
+## 🤖 Autonomous AI Trading
+
+MarketPy includes a fully autonomous trading system that uses ML models to trade automatically without human intervention.
+
+### How It Works
+
+1. **Continuous Monitoring** - Watches live market data 24/7
+2. **ML Predictions** - Uses trained models to predict price movements
+3. **Signal Generation** - Generates BUY/SELL signals based on edge detection
+4. **Automated Execution** - Executes trades automatically when conditions are met
+5. **Risk Management** - Enforces position limits, exposure limits, and stop-loss
+6. **Performance Tracking** - Monitors PnL, win rate, and other metrics in real-time
+
+### Quick Start
+
+```bash
+# Start autonomous trading via API
+curl -X POST http://localhost:8000/api/autonomous/start \
+  -H "Content-Type: application/json" \
+  -d '{
+    "initial_cash": 10000,
+    "markets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "edge_buffer": 0.001,
+    "kelly_fraction": 0.25,
+    "max_daily_loss": 500
+  }'
+
+# Check status
+curl http://localhost:8000/api/autonomous/status
+
+# View statistics
+curl http://localhost:8000/api/autonomous/stats
+
+# Stop trading
+curl -X POST http://localhost:8000/api/autonomous/stop
+```
+
+### Python API
+
+```python
+from backend.app.autonomous import AutonomousTrader, AutonomousConfig
+
+# Configure autonomous trader
+config = AutonomousConfig(
+    initial_cash=10000.0,
+    markets=["BTCUSDT", "ETHUSDT"],
+    edge_buffer=0.001,  # 0.1% minimum edge
+    kelly_fraction=0.25,  # Quarter Kelly sizing
+    max_position_per_market=5000.0,
+    max_total_exposure=8000.0,
+    max_daily_loss=500.0,
+)
+
+# Create and start trader
+trader = AutonomousTrader(config)
+await trader.start()
+
+# Monitor performance
+stats = trader.get_stats()
+print(f"Total PnL: ${stats['total_pnl']:.2f}")
+print(f"Win Rate: {stats['win_rate']:.1f}%")
+print(f"Total Trades: {stats['total_trades']}")
+
+# Stop trading
+await trader.stop()
+```
+
+### Configuration Options
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `initial_cash` | Starting capital | $10,000 |
+| `markets` | Markets to trade | ["BTCUSDT", "ETHUSDT", "SOLUSDT"] |
+| `edge_buffer` | Minimum edge required (%) | 0.001 (0.1%) |
+| `kelly_fraction` | Kelly criterion fraction | 0.25 (quarter Kelly) |
+| `order_size` | Order size as fraction of portfolio | 0.1 (10%) |
+| `max_position_per_market` | Max position per market | $5,000 |
+| `max_total_exposure` | Max total exposure | $8,000 |
+| `max_daily_loss` | Max daily loss before stopping | $500 |
+| `fill_model` | Fill model (M1/M2/M3) | M2 (realistic) |
+| `fee_rate` | Trading fee rate | 0.0002 (0.02%) |
+
+### Risk Management
+
+The autonomous trader includes multiple safety mechanisms:
+
+- **Position Limits** - Maximum position size per market
+- **Exposure Limits** - Maximum total portfolio exposure
+- **Daily Loss Limit** - Stops trading if daily loss exceeds threshold
+- **Edge Requirements** - Only trades when predicted edge exceeds buffer
+- **Kelly Sizing** - Position sizing based on Kelly criterion
+- **Cooldown Periods** - Adaptive cooldowns based on market volatility
+
+### Monitoring
+
+Real-time statistics available via API:
+
+```json
+{
+  "total_pnl": 234.56,
+  "total_pnl_pct": 2.35,
+  "total_trades": 42,
+  "win_rate": 58.5,
+  "sharpe_ratio": 1.23,
+  "max_drawdown": -3.2,
+  "current_positions": 2,
+  "runtime_hours": 12.5,
+  "is_running": true
+}
+```
+
+### Discord Notifications
+
+Enable Discord alerts for:
+- Trading started/stopped
+- Large trades executed
+- Risk limit violations
+- Performance milestones
+- Daily PnL updates
+
+Set `DISCORD_WEBHOOK_URL` in your `.env` file.
 
 ---
 
