@@ -1,1 +1,0 @@
-"""MarketPy Backend Application."""
