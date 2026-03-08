@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\strategy_assistant.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.2, 0.45, 1.0, '*.json', '-', '1h', 'BTCUSDT', 'Strategy', 'Strategy spec saved', '_', '```', '```python', 'content', 'custom_strategy', 'description', 'end_date', 'entry_conditions', 'exit_conditions', 'max 2 open trades', 'max_drawdown', 'momentum', 'name', 'needs improvement', 'path', 'promising', 'risk_rules', 'role', 'sharpe_ratio', 'start_date', 'stoploss 3%', 'strategy', 'strategy_name', 'symbols', 'timeframe', 'total_return', 'trading_style', 'user', 'user_id', 'utf-8', 'win_rate']

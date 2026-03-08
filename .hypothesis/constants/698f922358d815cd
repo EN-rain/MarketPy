@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\portfolio.py
-# hypothesis_version: 6.151.6
-
-['/portfolio', 'avg_entry_price', 'cash', 'current_price', 'initial_cash', 'market_value', 'max_drawdown', 'positions', 'positions_count', 'realized_pnl', 'side', 'size', 'total_equity', 'total_fees_paid', 'total_pnl', 'total_pnl_pct', 'trade_count', 'unrealized_pnl', 'win_rate']

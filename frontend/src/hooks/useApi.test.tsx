@@ -46,7 +46,7 @@ describe('useApi', () => {
       root.unmount();
     });
     container.remove();
-    setMockMode(true);
+    setMockMode(false);
   });
 
   it('surfaces live network failures instead of silently falling back', async () => {
@@ -66,19 +66,20 @@ describe('useApi', () => {
     expect(snapshot?.error?.kind).toBe('network');
   });
 
-  it('uses demo payloads only when demo mode is explicitly enabled', async () => {
+  it('keeps using live mode even if demo mode is requested', async () => {
     setMockMode(true);
-    vi.stubGlobal('fetch', vi.fn());
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline')));
 
     let snapshot: HookSnapshot | undefined;
 
     await act(async () => {
       root.render(<HookHarness endpoint="/status" onRender={(value) => { snapshot = value; }} />);
       await Promise.resolve();
+      await Promise.resolve();
     });
 
-    expect(snapshot?.usingMockData).toBe(true);
-    expect(snapshot?.data?.mode).toBe('BACKTEST');
-    expect(snapshot?.error).toBeNull();
+    expect(snapshot?.usingMockData).toBe(false);
+    expect(snapshot?.data).toBeUndefined();
+    expect(snapshot?.error?.kind).toBe('network');
   });
 });

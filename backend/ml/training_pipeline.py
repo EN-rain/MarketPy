@@ -89,6 +89,7 @@ class MLTrainingPipeline:
             model=model,
         )
         self.importance_tracker.save(importance)
+        self.importance_tracker.append_history(importance)
 
         return TrainingOutput(
             model=model,

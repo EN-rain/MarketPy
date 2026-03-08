@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\risk\var_calculator.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.95, 0.99, 1.0, 100, 300, 2000, 'historical', 'monte_carlo', 'parametric']

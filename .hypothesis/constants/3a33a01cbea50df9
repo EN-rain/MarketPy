@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\risk\stress_tester.py
-# hypothesis_version: 6.151.6
-
-[-0.6, -0.5, -0.45, -0.4, -0.38, -0.35, -0.31, -0.3, -0.28, -0.22, -0.18, -0.11, -0.08, 0.0, 0.01, 0.2, 0.34, 0.45, 0.5, 0.52, 0.75, 0.78, 0.8, 0.81, 0.82, 0.84, '2008_crisis', 'BTC', 'ETH', 'NDX', 'SOL', 'SPY', 'covid_crash', 'flash_crash']

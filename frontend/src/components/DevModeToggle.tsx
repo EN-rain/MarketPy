@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect, useSyncExternalStore, useCallback } from 'react';
-import { Database, Wifi, WifiOff, Loader2 } from 'lucide-react';
+import { Database, Wifi, Loader2 } from 'lucide-react';
 import { postApi } from '@/hooks/useApi';
 import { getApiUrl } from '@/lib/apiRuntime';
 import styles from './DevModeToggle.module.css';
 
-let globalMockMode = true;
+let globalMockMode = false;
 let globalStreamRunning = false;
 const listeners = new Set<(isMock: boolean) => void>();
 const streamListeners = new Set<(isRunning: boolean) => void>();
@@ -41,14 +41,14 @@ export function getStreamStatus() {
 
 export function setMockMode(isMock: boolean) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('marketpy_mock_mode', isMock ? 'true' : 'false');
+    localStorage.setItem('marketpy_mock_mode', 'false');
   }
 
-  emitChange(isMock);
+  emitChange(false);
 }
 
 export function useMockMode() {
-  return useSyncExternalStore(subscribeToMockMode, () => globalMockMode, () => true);
+  return useSyncExternalStore(subscribeToMockMode, () => false, () => false);
 }
 
 export function useStreamStatus() {
@@ -75,53 +75,44 @@ export default function DevModeToggle() {
     }
   }, []);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('marketpy_mock_mode');
-    if (saved !== null) {
-      const isMock = saved === 'true';
-      if (isMock !== globalMockMode) {
-        emitChange(isMock);
-      }
-    }
-
-    void checkStreamStatus();
-  }, [checkStreamStatus]);
-
-  const toggle = async () => {
-    const nextModeIsMock = !isMockMode;
+  const ensureLiveStream = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      if (!nextModeIsMock) {
-        setMockMode(false);
-        await postApi('/markets/start-stream', [
-          'btcusdt',
-          'ethusdt',
-          'solusdt',
-          'adausdt',
-          'dotusdt',
-          'linkusdt',
-          'maticusdt',
-          'avaxusdt',
-        ]);
-        emitStreamChange(true);
-      } else {
-        await postApi('/markets/stop-stream', {});
-        emitStreamChange(false);
-        setMockMode(true);
-      }
+      await postApi('/markets/start-stream', [
+        'btcusdt',
+        'ethusdt',
+        'solusdt',
+        'adausdt',
+        'dotusdt',
+        'linkusdt',
+        'maticusdt',
+        'avaxusdt',
+      ]);
+      emitStreamChange(true);
     } catch (nextError: unknown) {
       const message =
         nextError instanceof Error
           ? nextError.message
-          : 'Failed to change data source. Confirm the backend is reachable.';
+          : 'Failed to start live market stream. Confirm the backend is reachable.';
       setError(message);
-      setMockMode(isMockMode);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    emitChange(false);
+    localStorage.setItem('marketpy_mock_mode', 'false');
+    void checkStreamStatus();
+  }, [checkStreamStatus]);
+
+  useEffect(() => {
+    if (!isStreamRunning && !isLoading) {
+      void ensureLiveStream();
+    }
+  }, [ensureLiveStream, isLoading, isStreamRunning]);
 
   return (
     <div className={styles.wrapper}>
@@ -138,9 +129,9 @@ export default function DevModeToggle() {
             type="checkbox"
             id="data-mode-toggle"
             className={styles.toggleInput}
-            checked={!isMockMode}
-            onChange={toggle}
-            disabled={isLoading}
+            checked
+            onChange={() => undefined}
+            disabled
           />
           <label htmlFor="data-mode-toggle" className={styles.toggleLabel}>
             {isLoading ? (
@@ -153,27 +144,32 @@ export default function DevModeToggle() {
           </label>
         </div>
 
-        <div className={styles.statusBadge}>
-          <span className={styles.statusLabel}>Mode</span>
-          <span className={`${styles.statusValue} ${isMockMode ? styles.statusMock : styles.statusReal}`}>
+      <div className={styles.statusBadge}>
+        <span className={styles.statusLabel}>Mode</span>
+          <span className={`${styles.statusValue} ${styles.statusReal}`}>
             <span className={`${styles.statusDot} ${isLoading ? styles.pulsing : ''}`} />
-            {isLoading ? 'Switching...' : isMockMode ? 'Demo Data' : 'Live API'}
-            {!isLoading && (isMockMode ? <WifiOff size={14} /> : <Wifi size={14} />)}
+            {isLoading ? 'Starting Stream...' : 'Live API Only'}
+            {!isLoading ? <Wifi size={14} /> : null}
           </span>
         </div>
       </div>
 
       <div className={styles.hint}>
-        <span className={styles.hintIcon}>{isMockMode ? 'Demo' : 'Live'}</span>
-        {isMockMode
-          ? 'Using simulated data intentionally. Switch to Live API only when the backend is available.'
-          : 'Using the configured backend. Switch back to Demo to isolate frontend behavior from live connectivity.'}
+        <span className={styles.hintIcon}>Live</span>
+        Demo mode is disabled. All terminal pages read from the configured API and websocket feed.
       </div>
 
-      {isStreamRunning && !isMockMode ? (
+      {isStreamRunning ? (
         <div className={styles.streamStatus}>
           <span className={styles.streamIndicator} />
           Binance Stream Active
+        </div>
+      ) : null}
+
+      {!isStreamRunning && !isLoading ? (
+        <div className={styles.streamStatus}>
+          <span className={styles.streamIndicator} />
+          Attempting to start live stream
         </div>
       ) : null}
     </div>

@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\automation\models.py
-# hypothesis_version: 6.151.6
-
-['CANCEL_ORDERS', 'CLOSE_POSITION', 'FAILED', 'PLACE_ORDER', 'REJECTED', 'SKIPPED', 'SUCCESS']

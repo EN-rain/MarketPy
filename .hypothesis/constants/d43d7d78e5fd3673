@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\backtest\instant_engine.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.01, 0.5, 1.0, 1000.0, '5m', 'BUY', 'SELL', 'bars.parquet', 'close', 'equity', 'mid', 'momentum', 'parquet', 'position', 'price', 'ret', 'strat_ret', 'symbol', 'timestamp']

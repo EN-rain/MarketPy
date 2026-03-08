@@ -8,15 +8,17 @@ from datetime import UTC, datetime
 from functools import lru_cache
 from pathlib import Path
 from secrets import compare_digest
+from uuid import uuid4
 
 import pandas as pd
 import polars as pl
 from fastapi import APIRouter, Header, HTTPException, Request
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from backend.app.backtest.instant_engine import InstantBacktestEngine
 from backend.app.models.config import settings
 from backend.app.models.market import Candle, MarketInfo
+from backend.app.security.input_validation import sanitize_symbol, sanitize_text
 from backend.sim.engine import SimEngine
 from backend.sim.vectorized_engine import VectorizedBacktestEngine, VectorizedStrategy
 from backend.strategies.ai_strategy import AIStrategy
@@ -29,6 +31,7 @@ logger = logging.getLogger(__name__)
 _rate_window: dict[str, deque[datetime]] = defaultdict(deque)
 _rate_last_seen: dict[str, datetime] = {}
 _rate_checks = 0
+_recent_backtests: deque[dict] = deque(maxlen=25)
 SUPPORTED_STRATEGIES = ("momentum", "mean_reversion", "ai", "ai_predictor")
 SUPPORTED_EXECUTION_MODES = ("event_driven", "vectorized")
 MAX_MARKETS_PER_REQUEST = 20
@@ -51,6 +54,30 @@ class BacktestRequest(BaseModel):
     use_instant_engine: bool = True
     execution_mode: str = "event_driven"
 
+    @field_validator("strategy")
+    @classmethod
+    def _sanitize_strategy(cls, value: str) -> str:
+        normalized = sanitize_text(value.lower(), max_length=32)
+        if normalized not in SUPPORTED_STRATEGIES:
+            raise ValueError(f"Unsupported strategy '{value}'")
+        return normalized
+
+    @field_validator("market_ids")
+    @classmethod
+    def _sanitize_market_ids(cls, values: list[str]) -> list[str]:
+        cleaned = [sanitize_symbol(item) for item in values]
+        if any(not item for item in cleaned):
+            raise ValueError("market_ids cannot contain empty symbols")
+        return cleaned
+
+    @field_validator("execution_mode")
+    @classmethod
+    def _sanitize_execution_mode(cls, value: str) -> str:
+        normalized = sanitize_text(value.lower(), max_length=32)
+        if normalized not in SUPPORTED_EXECUTION_MODES:
+            raise ValueError(f"Unsupported execution_mode '{value}'")
+        return normalized
+
 
 class BacktestResult(BaseModel):
     total_pnl: float
@@ -63,6 +90,37 @@ class BacktestResult(BaseModel):
     equity_curve: list[dict]
     trades: list[dict]
     diagnostics: dict
+
+
+def _format_period(start_date: str | None, end_date: str | None) -> str:
+    start = start_date[:10] if start_date else "start"
+    end = end_date[:10] if end_date else "latest"
+    return f"{start} -> {end}"
+
+
+def _record_recent_backtest(params: BacktestRequest, result: BacktestResult) -> None:
+    engine_name = str(result.diagnostics.get("engine", params.execution_mode))
+    started_at = datetime.now(UTC).isoformat()
+    _recent_backtests.appendleft(
+        {
+            "id": f"BT-{uuid4().hex[:8].upper()}",
+            "strategy": params.strategy,
+            "pair": ", ".join(params.market_ids),
+            "period": _format_period(params.start_date, params.end_date),
+            "markets": params.market_ids,
+            "trades": result.total_trades,
+            "win_rate": result.win_rate,
+            "total_return": result.total_pnl_pct,
+            "sharpe": result.sharpe_ratio,
+            "max_drawdown": result.max_drawdown,
+            "status": "completed",
+            "duration": result.diagnostics.get("execution_ms"),
+            "started_at": started_at,
+            "completed_at": started_at,
+            "execution_mode": params.execution_mode,
+            "engine": engine_name,
+        }
+    )
 
 
 def _enforce_backtest_auth_and_rate_limit(request: Request, api_key: str | None) -> None:
@@ -299,7 +357,7 @@ async def run_backtest(
             slippage=0.0,
         )
         result = engine.run(strategy=strategy, data=frame)
-        return BacktestResult(
+        payload = BacktestResult(
             total_pnl=result.total_return * params.initial_cash,
             total_pnl_pct=result.total_return * 100.0,
             total_trades=len(result.trades),
@@ -324,6 +382,8 @@ async def run_backtest(
                 "profit_factor": result.profit_factor,
             },
         )
+        _record_recent_backtest(params, payload)
+        return payload
 
     if params.use_instant_engine:
         try:
@@ -337,7 +397,7 @@ async def run_backtest(
                 lookback_bars=params.lookback_bars,
                 momentum_threshold=params.momentum_threshold,
             )
-            return BacktestResult(
+            payload = BacktestResult(
                 total_pnl=instant_result.total_return * params.initial_cash,
                 total_pnl_pct=instant_result.total_return * 100.0,
                 total_trades=len(instant_result.trades),
@@ -367,6 +427,8 @@ async def run_backtest(
                     "markets_processed": len(params.market_ids),
                 },
             )
+            _record_recent_backtest(params, payload)
+            return payload
         except Exception as exc:
             logger.warning(
                 "Instant backtest failed, falling back to event-driven engine: %s",
@@ -409,7 +471,7 @@ async def run_backtest(
         if std > 0:
             sharpe = avg / std
 
-    return BacktestResult(
+    payload = BacktestResult(
         total_pnl=portfolio.total_pnl,
         total_pnl_pct=portfolio.total_pnl_pct,
         total_trades=len(portfolio.trades),
@@ -450,6 +512,8 @@ async def run_backtest(
             "errors": result.errors,
         },
     )
+    _record_recent_backtest(params, payload)
+    return payload
 
 
 @router.get("/backtest/capabilities")
@@ -493,3 +557,9 @@ async def get_backtest_rate_limit_status(request: Request):
         "remaining": max(limit - used, 0),
         "window_seconds": 60,
     }
+
+
+@router.get("/backtest/recent")
+async def get_recent_backtests():
+    """Return recent completed backtests for the terminal UI."""
+    return {"items": list(_recent_backtests)}

@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\sim\vectorized_engine.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.001, 1.0, 100.0, 10000.0, 252, '-inf', 'BUY', 'Max Drawdown [%]', 'Profit Factor', 'SELL', 'Sharpe Ratio', 'Total Return [%]', 'Win Rate [%]', 'close', 'entries', 'equity', 'event_driven', 'exits', 'inf', 'params', 'price', 'side', 'size', 'timestamp', 'total_return', 'vectorized']

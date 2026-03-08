@@ -116,10 +116,10 @@ def add_labels(
     Args:
         df: DataFrame with 'mid' column.
         horizons: Dict of {label_name: bars_ahead}.
-            Default: 1h=12, 6h=72, 1d=288 (at 5m bars).
+            Default: 5m=1, 1h=12, 6h=72, 1d=288 (at 5m bars).
     """
     if horizons is None:
-        horizons = {"y_1h": 12, "y_6h": 72, "y_1d": 288}
+        horizons = {"y_5m": 1, "y_1h": 12, "y_6h": 72, "y_1d": 288}
 
     if embargo_bars is None:
         embargo_bars = max(horizons.values())
@@ -175,6 +175,7 @@ def get_feature_columns(df: pl.DataFrame) -> list[str]:
     """Return the list of feature column names (excludes labels and metadata)."""
     exclude = {
         "timestamp",
+        "market_id",
         "token_id",
         "open",
         "high",
@@ -186,6 +187,7 @@ def get_feature_columns(df: pl.DataFrame) -> list[str]:
         "spread",
         "volume",
         "trade_count",
+        "y_5m",
         "y_1h",
         "y_6h",
         "y_1d",

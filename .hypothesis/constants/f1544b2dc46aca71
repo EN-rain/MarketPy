@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\health.py
-# hypothesis_version: 6.151.6
-
-[404, 503, '/health/config', '/health/connections', '/health/memory', '/health/processing', '/health/rate-limits', '/metrics/prometheus', '/metrics/tasks', '_paper_engine', 'approx_bytes', 'batch_window_ms', 'burst_size', 'candle_count', 'completed_count', 'config_manager', 'connection_manager', 'connections', 'cooldown_seconds', 'current_task_count', 'current_tokens', 'degraded', 'dropped_by_type', 'exchange', 'exchange_client', 'failed_count', 'health_monitor', 'idle', 'market_id', 'max_batch_size', 'max_tokens', 'memory_manager', 'messages_allowed', 'messages_dropped', 'metrics_registry', 'newest_timestamp', 'ok', 'oldest_timestamp', 'processing', 'queue_depth', 'rate_limiter', 'realtime_services', 'reason', 'rejected_count', 'retention_seconds', 'risk', 'slow_client_timeout', 'stats', 'status', 'stopped', 'task_manager', 'tier', 'worker_pool_size']

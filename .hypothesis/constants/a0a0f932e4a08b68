@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\discord_notifier.py
-# hypothesis_version: 6.151.6
-
-[5.0, 200, 400, 3066993, 3447003, 10181046, 15105570, 15158332, 15965202, ',', '10', '5', 'DISCORD_WEBHOOK_URL', 'ERROR', 'INFO', 'RISK', 'SYSTEM', 'TRADE', 'WARNING', 'color', 'description', 'embeds', 'fields', 'inline', 'name', 'timestamp', 'title', 'value']

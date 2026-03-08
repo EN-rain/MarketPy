@@ -82,16 +82,16 @@ def fill_order_m2(
     limit_price: float | None = None,
 ) -> FillResult:
     if orderbook.best_bid is None or orderbook.best_ask is None or orderbook.mid is None:
-        return FillResult(filled=False)
+        return FillResult(filled=False, reason="no_orderbook")
 
     if side == Side.BUY:
         fill_price = orderbook.best_ask
         if limit_price is not None and fill_price > limit_price:
-            return FillResult(filled=False)
+            return FillResult(filled=False, reason="not_crossed")
     else:
         fill_price = orderbook.best_bid
         if limit_price is not None and fill_price < limit_price:
-            return FillResult(filled=False)
+            return FillResult(filled=False, reason="not_crossed")
 
     fee = calculate_fee(fill_price, size, fee_rate, fee_exponent)
     slippage = abs(fill_price - orderbook.mid)

@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\strategy_lab\composer.py
-# hypothesis_version: 6.151.6
-
-['action', 'action.', 'action.buy', 'action.sell', 'blocks', 'boolean', 'config', 'connections', 'engine_plan', 'from_block_id', 'from_port', 'graph', 'id', 'in', 'indicator.custom', 'indicator.momentum', 'inputs', 'kind', 'left', 'name', 'number', 'operator.and', 'operator.not', 'operator.or', 'operator.threshold', 'out', 'outputs', 'right', 'signal.price', 'signal.volume', 'strategy_id', 'to_block_id', 'to_port', 'trigger', 'type', 'version']

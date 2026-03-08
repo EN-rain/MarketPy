@@ -9,7 +9,10 @@ from pydantic import BaseModel
 
 
 class Horizon(str, Enum):
+    M5 = "5m"
+    M15 = "15m"
     H1 = "1h"
+    H4 = "4h"
     H6 = "6h"
     D1 = "1d"
 
@@ -21,6 +24,8 @@ class Prediction(BaseModel):
     predicted_return: float  # log return
     predicted_price: float  # mid * exp(predicted_return)
     confidence: float = 0.0  # model confidence / feature importance
+    interval_low: float | None = None
+    interval_high: float | None = None
 
 
 class EdgeDecision(str, Enum):

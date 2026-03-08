@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\github_client.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.3, 1.0, 2.0, 100, 3600, 5000, '/rate_limit', 'Accept', 'Authorization', 'commit_change', 'commit_count_24h', 'contributor_change', 'contributor_count', 'issue_change', 'max_change', 'open_issues_count', 'per_page', 'repo', 'repo is required', 'since', 'threshold', 'timestamp']

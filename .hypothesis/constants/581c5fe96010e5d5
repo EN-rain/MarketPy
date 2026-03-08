@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\__init__.py
-# hypothesis_version: 6.151.6
-
-['APIGateway', 'CoinCapClient', 'CoinGeckoClient', 'CoinPaprikaClient', 'DiscordMessage', 'DiscordWebhookClient', 'ExternalAPIClient', 'FeedFailoverManager', 'GitHubClient', 'MarketMetricsService', 'MempoolClient', 'OnChainAlert', 'OnChainMonitor', 'RateLimit', 'RetryPolicy', 'TTLCache']

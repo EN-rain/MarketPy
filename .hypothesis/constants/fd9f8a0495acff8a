@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\strategies\ai_strategy.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.02, 0.05, 0.1, 1.0, 100.0, 'ai', 'buy_threshold', 'day_of_week', 'hour_of_day', 'sell_threshold', 'spread_avg_12', 'spread_pct', 'time_to_close']

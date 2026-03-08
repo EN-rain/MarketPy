@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\metrics.py
-# hypothesis_version: 6.151.6
-
-[0.0, 1.0, 'counters', 'duration_count', 'duration_sum', 'gauges']

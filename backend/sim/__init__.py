@@ -24,6 +24,12 @@ from backend.sim.vectorized_engine import (
     VectorizedBacktestEngine,
     VectorizedStrategy,
 )
+from backend.sim.walk_forward import (
+    WalkForwardOptimizer,
+    WalkForwardReport,
+    WalkForwardResult,
+    WalkForwardWindow,
+)
 
 __all__ = [
     "BacktestResult",
@@ -42,6 +48,10 @@ __all__ = [
     "SimResult",
     "VectorizedBacktestEngine",
     "VectorizedStrategy",
+    "WalkForwardOptimizer",
+    "WalkForwardReport",
+    "WalkForwardResult",
+    "WalkForwardWindow",
     "fill_order",
     "fill_order_m1",
     "fill_order_m2",

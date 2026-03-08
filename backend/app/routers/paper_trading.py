@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field
 
 from backend.app.integrations.discord_notifier import DiscordNotifier, DiscordNotifierConfig
 from backend.app.models.config import SimMode, settings
+from backend.app.models.market import Side
 from backend.paper_trading.live_feed import LiveFeedUpdate
 
 router = APIRouter()
@@ -34,6 +35,23 @@ def get_binance_client(request: Request):
     return get_router_binance_client(None)
 
 
+def get_paper_engine() -> Any | None:
+    """Return the current shared paper trading engine instance."""
+    return _paper_engine
+
+
+def set_paper_engine(engine: Any | None) -> None:
+    """Set the shared paper trading engine instance."""
+    global _paper_engine
+    _paper_engine = engine
+
+
+def set_binance_handler(handler: Any | None) -> None:
+    """Track the shared Binance handler used by paper trading."""
+    global _binance_handler
+    _binance_handler = handler
+
+
 class StartPaperTradingRequest(BaseModel):
     market_ids: list[str] = Field(min_length=1, description="Token IDs to trade")
     strategy: str = "momentum"
@@ -53,6 +71,27 @@ class PaperTradingStatus(BaseModel):
     total_pnl_pct: float
 
 
+class ManualPaperOrderRequest(BaseModel):
+    market_id: str = Field(min_length=3, description="Tradable market symbol, e.g. BTCUSDT")
+    side: str = Field(pattern="^(buy|sell)$")
+    size: float = Field(gt=0)
+    order_type: str = Field(default="market", pattern="^(market|limit)$")
+    limit_price: float | None = Field(default=None, gt=0)
+
+
+class ManualPaperOrderResponse(BaseModel):
+    status: str
+    market_id: str
+    side: str
+    size: float
+    price: float | None = None
+    fee: float | None = None
+    pnl: float | None = None
+    timestamp: str | None = None
+    strategy: str | None = None
+    reason: str | None = None
+
+
 @router.post("/paper/start")
 async def start_paper_trading(request: Request, params: StartPaperTradingRequest):
     global _paper_engine, _binance_handler, _fallback_task, _last_ws_tick_by_symbol
@@ -69,6 +108,9 @@ async def start_paper_trading(request: Request, params: StartPaperTradingRequest
     notifier = getattr(request.app.state, "discord_notifier", None)
     if notifier is None:
         notifier = DiscordNotifier(DiscordNotifierConfig.from_env())
+
+    if _paper_engine and not _paper_engine.is_running:
+        _paper_engine = None
 
     _paper_engine = PaperTradingEngine(
         initial_cash=params.initial_cash,
@@ -215,9 +257,11 @@ async def stop_paper_trading(request: Request):
         _binance_handler = None
     if _paper_engine:
         _paper_engine.stop()
+        set_paper_engine(None)
     if _fallback_task and not _fallback_task.done():
         _fallback_task.cancel()
     _fallback_task = None
+    set_binance_handler(None)
 
     app_state = request.app.state.app_state
     app_state.mode = SimMode.BACKTEST
@@ -366,6 +410,28 @@ async def get_paper_portfolio():
         }
     except Exception:
         return default_portfolio
+
+
+@router.post("/paper/order", response_model=ManualPaperOrderResponse)
+async def submit_paper_order(params: ManualPaperOrderRequest):
+    engine = get_paper_engine()
+    if engine is None or not engine.is_running:
+        raise HTTPException(status_code=400, detail="Paper trading engine is not running")
+
+    try:
+        result = await engine.submit_manual_order(
+            market_id=params.market_id,
+            side=Side.BUY if params.side == "buy" else Side.SELL,
+            size=params.size,
+            limit_price=params.limit_price if params.order_type == "limit" else None,
+            strategy="manual",
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    return ManualPaperOrderResponse(**result)
 
 
 @router.websocket("/ws/paper")

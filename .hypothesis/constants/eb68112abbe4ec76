@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\ingest\binance_client.py
-# hypothesis_version: 6.151.6
-
-[0.0, 30.0, 100, 1000, '/', '/api/v3/exchangeInfo', '/api/v3/klines', '1h', 'BINANCE_API_KEY', 'BINANCE_API_SECRET', 'LIST_SUBSCRIPTIONS', 'P', 'USDT', 'a', 'adausdt', 'ask', 'askPrice', 'avaxusdt', 'b', 'bid', 'bidPrice', 'btcusdt', 'c', 'data', 'dotusdt', 'ethusdt', 'h', 'id', 'interval', 'l', 'limit', 'linkusdt', 'market', 'maticusdt', 'method', 'mid', 'p', 'raw', 's', 'solusdt', 'stream', 'symbol', 'ticker', 'type', 'usdt', 'v']

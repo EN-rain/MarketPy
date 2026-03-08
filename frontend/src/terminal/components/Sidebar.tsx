@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Activity,
   BarChart3,
   Brain,
   ChevronRight,
@@ -19,7 +20,20 @@ import {
 import { cn } from '../utils/cn';
 import { formatIsoDate, formatUtcClock } from '../utils/time';
 
-export type Page = 'overview' | 'markets' | 'paper-trading' | 'backtests' | 'models' | 'database';
+export type Page =
+  | 'overview'
+  | 'markets'
+  | 'paper-trading'
+  | 'backtests'
+  | 'models'
+  | 'database'
+  | 'features'
+  | 'patterns'
+  | 'risk'
+  | 'execution'
+  | 'regime'
+  | 'exchanges'
+  | 'explainability';
 
 export type NavItem = {
   id: Page;
@@ -35,12 +49,24 @@ export const navItems: NavItem[] = [
   { id: 'backtests', label: 'Backtests', href: '/backtests', icon: FlaskConical },
   { id: 'models', label: 'Models', href: '/models', icon: Brain },
   { id: 'database', label: 'Database', href: '/data', icon: Database },
+  { id: 'features', label: 'Feature Store', href: '/features', icon: Database },
+  { id: 'patterns', label: 'Patterns', href: '/patterns', icon: BarChart3 },
+  { id: 'risk', label: 'Risk', href: '/risk', icon: Activity },
+  { id: 'execution', label: 'Execution', href: '/execution', icon: Repeat2 },
+  { id: 'regime', label: 'Regime', href: '/regime', icon: Clock },
+  { id: 'exchanges', label: 'Exchanges', href: '/exchanges', icon: Wifi },
+  { id: 'explainability', label: 'Explainability', href: '/explainability', icon: Brain },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [now, setNow] = useState<Date>(() => new Date());
-  const [lastUpdateAt, setLastUpdateAt] = useState(() => Date.now());
+  const hydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+  const [now, setNow] = useState<Date | null>(null);
+  const [lastUpdateAt, setLastUpdateAt] = useState<number | null>(null);
 
   useEffect(() => {
     const clockTimer = setInterval(() => setNow(new Date()), 1000);
@@ -51,7 +77,11 @@ export default function Sidebar() {
     };
   }, []);
 
-  const secondsAgo = Math.max(0, Math.floor((now.getTime() - lastUpdateAt) / 1000));
+  const effectiveNow = hydrated ? (now ?? new Date()) : null;
+  const effectiveLastUpdateAt = hydrated ? (lastUpdateAt ?? effectiveNow?.getTime() ?? null) : null;
+  const secondsAgo = effectiveNow && effectiveLastUpdateAt
+    ? Math.max(0, Math.floor((effectiveNow.getTime() - effectiveLastUpdateAt) / 1000))
+    : null;
 
   return (
     <aside className="fixed top-0 bottom-0 left-0 z-50 flex w-[220px] flex-col border-r border-border bg-bg-secondary">
@@ -112,17 +142,17 @@ export default function Sidebar() {
               <Clock size={10} className="text-text-muted" />
               <span className="font-mono text-[10px] text-text-muted">Last update</span>
             </div>
-            <span className="font-mono text-[10px] text-text-secondary">{secondsAgo}s ago</span>
+            <span className="font-mono text-[10px] text-text-secondary">{secondsAgo == null ? '--' : `${secondsAgo}s ago`}</span>
           </div>
 
           <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] text-text-muted">Clock</span>
-            <span className="font-mono text-[10px] text-text-secondary">{formatUtcClock(now)}</span>
+            <span className="font-mono text-[10px] text-text-secondary">{effectiveNow ? formatUtcClock(effectiveNow) : '--:--:-- UTC'}</span>
           </div>
 
           <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] text-text-muted">Date</span>
-            <span className="font-mono text-[10px] text-text-secondary">{formatIsoDate(now)}</span>
+            <span className="font-mono text-[10px] text-text-secondary">{effectiveNow ? formatIsoDate(effectiveNow) : '----/--/--'}</span>
           </div>
         </div>
 

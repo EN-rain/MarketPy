@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\kimi_k2_client.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.01, 0.2, 0.25, 0.5, 2.0, 60.0, 1000.0, 429, 500, '/', '/chat/completions', 'Authorization', 'Content-Type', 'application/json', 'attempt', 'choices', 'content', 'duration_ms', 'error', 'intent', 'max_tokens', 'message', 'messages', 'model', 'role', 'status_code', 'system', 'temperature', 'user', 'user_message', 'wait_seconds', '{', '}']

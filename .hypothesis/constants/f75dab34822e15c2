@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\trades.py
-# hypothesis_version: 6.151.6
-
-[500, '/trades', 'action', 'edge', 'fee', 'id', 'market_id', 'pnl', 'price', 'size', 'strategy', 'timestamp']

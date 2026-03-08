@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\nlp.py
-# hypothesis_version: 6.151.6
-
-[30.0, 1000, ' buy ', ' sell ', '<', '<=', 'Command parsed', '\\b(\\d+(?:\\.\\d+)?)\\b', 'above', 'action', 'analy', 'assistant', 'backtest', 'below', 'buy', 'check', 'clarification', 'command_type', 'condition_type', 'conditions', 'content', 'default_strategy', 'direction', 'error', 'errors', 'if rsi', 'intent', 'level', 'missing', 'openclaw.nlp', 'parameters', 'position', 'price', 'quantity', 'role', 'rsi_level', 'sell', 'strategy_name', 'symbol', 'user', 'user_id']

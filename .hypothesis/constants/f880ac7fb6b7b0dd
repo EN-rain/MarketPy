@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\automation\engine.py
-# hypothesis_version: 6.151.6
-
-[0.0, 'action_id', 'daily_pnl', 'executed', 'halted_after_error', 'kill_switch_engaged', 'market_not_allowed', 'message', 'ok', 'payload', 'position_notional', 'price', 'size', 'status', 'timestamp']

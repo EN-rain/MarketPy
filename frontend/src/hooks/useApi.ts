@@ -77,19 +77,87 @@ function getDefaultMockData<T>(endpoint: string): T | undefined {
     return mockDataHealth as T;
   }
 
+  if (endpoint === '/backtest/recent') {
+    return {
+      items: [
+        {
+          id: 'BT-DEMO-001',
+          strategy: 'momentum',
+          pair: 'BTCUSDT',
+          period: '2024-01-01 -> 2024-06-30',
+          trades: 48,
+          win_rate: 61.4,
+          total_return: 12.8,
+          sharpe: 1.42,
+          max_drawdown: -7.2,
+          status: 'completed',
+          duration: 840,
+          execution_mode: 'event_driven',
+          engine: 'instant',
+        },
+      ],
+    } as T;
+  }
+
+  if (endpoint === '/backtest/capabilities') {
+    return {
+      strategies: ['momentum', 'mean_reversion', 'ai', 'ai_predictor'],
+      execution_modes: ['event_driven', 'vectorized'],
+      defaults: {
+        strategy: 'momentum',
+        execution_mode: 'event_driven',
+        bar_size: '5m',
+        fill_model: 'M2',
+        use_instant_engine: true,
+      },
+      constraints: {
+        api_key_required: false,
+        rate_limit_per_minute: 10,
+        max_markets_per_request: 20,
+      },
+    } as T;
+  }
+
+  if (endpoint === '/backtest/rate-limit-status') {
+    return {
+      used: 1,
+      limit: 10,
+      remaining: 9,
+    } as T;
+  }
+
+  if (endpoint === '/models/registry') {
+    return {
+      items: [
+        {
+          id: 'model_5m',
+          name: 'Model 5M',
+          type: 'artifact',
+          accuracy: 74.6,
+          horizon: '5m',
+          last_trained: '2 h ago',
+          status: 'active',
+          params: '--',
+          dataset: 'parquet',
+        },
+      ],
+    } as T;
+  }
+
   if (endpoint.startsWith('/models/analytics')) {
     const now = Date.now();
     const rows = Array.from({ length: 20 }, (_, index) => ({
       market_id: 'BTCUSDT',
-      horizon: '1h',
-      signal_ts: new Date(now - (index + 2) * 3600_000).toISOString(),
-      resolved_ts: new Date(now - index * 600_000).toISOString(),
+      horizon: '5m',
+      signal_ts: new Date(now - (index + 2) * 300_000).toISOString(),
+      resolved_ts: new Date(now - index * 300_000).toISOString(),
       base_price: 67000 + index * 10,
       predicted_price: 67100 + index * 8,
       actual_price: 67080 + index * 9,
       abs_error: 20 + (index % 4),
       error_pct: 0.001 + (index % 5) * 0.0001,
       correct_direction: index % 3 !== 0,
+      confidence: 0.72,
     }));
 
     return {
@@ -99,16 +167,27 @@ function getDefaultMockData<T>(endpoint: string): T | undefined {
         directional_accuracy: 0.67,
         mean_error_pct: 0.0014,
         adaptive_kelly_multiplier: 1.12,
+        win_rate: 0.67,
+        by_horizon: {
+          '5m': {
+            resolved_predictions: rows.length,
+            pending_predictions: 8,
+            directional_accuracy: 0.67,
+            mean_error_pct: 0.0014,
+            win_rate: 0.67,
+          },
+        },
       },
       recent_predictions: rows.slice(0, 12),
       live_preview: rows.slice(0, 8).map((row) => ({
         market_id: row.market_id,
         horizon: row.horizon,
         signal_ts: row.signal_ts,
-        due_ts: new Date(new Date(row.signal_ts).getTime() + 3600_000).toISOString(),
+        due_ts: new Date(new Date(row.signal_ts).getTime() + 300_000).toISOString(),
         base_price: row.base_price,
         predicted_price: row.predicted_price,
         current_price: row.actual_price,
+        confidence: row.confidence,
         provisional_error: row.predicted_price - row.actual_price,
         provisional_error_pct: (row.predicted_price - row.actual_price) / row.base_price,
       })),

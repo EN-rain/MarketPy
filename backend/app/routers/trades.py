@@ -16,7 +16,17 @@ async def get_trades(
     market_id: str | None = None,
 ):
     """Return recent trades, optionally filtered by market."""
-    trades = _trades
+    trades = list(_trades)
+
+    try:
+        from backend.app.routers.paper_trading import get_paper_engine
+
+        paper_engine = get_paper_engine()
+        if paper_engine is not None:
+            trades.extend(paper_engine.portfolio.trades)
+    except Exception:
+        pass
+
     if market_id:
         trades = [t for t in trades if t.market_id == market_id]
 

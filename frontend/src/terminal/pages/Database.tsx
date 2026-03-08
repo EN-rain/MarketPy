@@ -1,39 +1,63 @@
-import { HardDrive, RefreshCw, Download, Trash2 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardBody, Badge, ProgressBar, Chip } from '../components/UI';
+'use client';
+
+import { Download, HardDrive, RefreshCw, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useApi } from '@/hooks/useApi';
+import { Card, CardHeader, CardTitle, CardBody, Badge, ProgressBar, Chip } from '../components/UI';
 import { cn } from '../utils/cn';
 import { formatRelativeTime } from '../utils/time';
 
 interface DatasetInfo {
-  id: string;
   name: string;
-  type: 'ohlcv' | 'orderbook' | 'social' | 'onchain';
+  type: 'ohlcv';
   symbol: string;
   interval: string;
   rows: string;
   size: string;
   lastUpdatedAt: number;
-  status: 'synced' | 'syncing' | 'stale';
+  status: 'synced' | 'stale';
   coverage: string;
 }
 
-const now = Date.now();
-const datasets: DatasetInfo[] = [
-  { id: 'DS-001', name: 'btc_1m_2y', type: 'ohlcv', symbol: 'BTC/USDT', interval: '1m', rows: '1,051,200', size: '2.4 GB', lastUpdatedAt: now - 2 * 60 * 1000, status: 'synced', coverage: '2022-06 -> 2024-06' },
-  { id: 'DS-002', name: 'eth_1m_3y', type: 'ohlcv', symbol: 'ETH/USDT', interval: '1m', rows: '1,576,800', size: '3.6 GB', lastUpdatedAt: now - 2 * 60 * 1000, status: 'synced', coverage: '2021-06 -> 2024-06' },
-  { id: 'DS-003', name: 'sol_1m_1y', type: 'ohlcv', symbol: 'SOL/USDT', interval: '1m', rows: '525,600', size: '1.2 GB', lastUpdatedAt: now - 5 * 60 * 1000, status: 'synced', coverage: '2023-06 -> 2024-06' },
-  { id: 'DS-004', name: 'multi_1h_2y', type: 'ohlcv', symbol: 'Multiple', interval: '1h', rows: '175,200', size: '820 MB', lastUpdatedAt: now - 15 * 60 * 1000, status: 'synced', coverage: '2022-06 -> 2024-06' },
-  { id: 'DS-005', name: 'orderbook_1m', type: 'orderbook', symbol: 'BTC/USDT', interval: '1m', rows: '8,640,000', size: '12.8 GB', lastUpdatedAt: now - 30 * 1000, status: 'syncing', coverage: '2024-01 -> now' },
-  { id: 'DS-006', name: 'social_feeds', type: 'social', symbol: 'Multiple', interval: 'real-time', rows: '2,340,000', size: '4.2 GB', lastUpdatedAt: now - 60 * 60 * 1000, status: 'stale', coverage: '2023-01 -> 2024-05' },
-  { id: 'DS-007', name: 'btc_onchain', type: 'onchain', symbol: 'BTC', interval: '1d', rows: '3,650', size: '180 MB', lastUpdatedAt: now - 6 * 60 * 60 * 1000, status: 'synced', coverage: '2014-01 -> 2024-06' },
-  { id: 'DS-008', name: 'avax_1m_1y', type: 'ohlcv', symbol: 'AVAX/USDT', interval: '1m', rows: '525,600', size: '1.1 GB', lastUpdatedAt: now - 8 * 60 * 1000, status: 'synced', coverage: '2023-06 -> 2024-06' },
-];
+type DataHealthResponse = {
+  total_markets: number;
+  active_markets: number;
+  total_records: number;
+  storage_size_gb: number;
+  last_ingestion: string | null;
+  data_quality_score: number;
+  datasets: Array<{
+    name: string;
+    records: number;
+    size_mb: number;
+    last_update: string;
+    status: 'healthy' | 'warning';
+  }>;
+  ingestion_status: {
+    ws_connected: boolean;
+    rest_api_healthy: boolean;
+    parquet_writer_healthy: boolean;
+    duckdb_healthy: boolean;
+  };
+};
 
-const storageUsed = 26.3;
-const storageTotal = 50;
+function parseRelativeTimestamp(value: string, nowMs: number): number {
+  if (value === 'just now') {
+    return nowMs;
+  }
+  const match = value.match(/^(\d+)\s+(min|h|d)\s+ago$/);
+  if (!match) {
+    return nowMs;
+  }
+  const amount = Number.parseInt(match[1], 10);
+  const unit = match[2];
+  const multiplier = unit === 'min' ? 60_000 : unit === 'h' ? 3_600_000 : 86_400_000;
+  return nowMs - amount * multiplier;
+}
 
 export default function Database() {
-  const [filter, setFilter] = useState<'all' | 'ohlcv' | 'orderbook' | 'social' | 'onchain'>('all');
+  const healthRequest = useApi<DataHealthResponse>('/data/health', { pollInterval: 5000 });
+  const [filter, setFilter] = useState<'all' | 'ohlcv'>('all');
   const [nowMs, setNowMs] = useState(() => Date.now());
 
   useEffect(() => {
@@ -41,7 +65,22 @@ export default function Database() {
     return () => clearInterval(timer);
   }, []);
 
-  const filtered = datasets.filter(d => filter === 'all' || d.type === filter);
+  const datasets: DatasetInfo[] = (healthRequest.data?.datasets ?? []).map((dataset) => ({
+    name: dataset.name,
+    type: 'ohlcv',
+    symbol: dataset.name.replace('USDT', '/USDT'),
+    interval: 'live',
+    rows: dataset.records.toLocaleString('en-US'),
+    size: `${dataset.size_mb.toFixed(1)} MB`,
+    lastUpdatedAt: parseRelativeTimestamp(dataset.last_update, nowMs),
+    status: dataset.status === 'healthy' ? 'synced' : 'stale',
+    coverage: dataset.last_update,
+  }));
+
+  const filtered = datasets.filter((dataset) => filter === 'all' || dataset.type === filter);
+  const storageUsed = healthRequest.data?.storage_size_gb ?? 0;
+  const storageTotal = Math.max(Math.ceil(storageUsed || 1), 1);
+  const qualityScore = Math.round((healthRequest.data?.data_quality_score ?? 0) * 100);
 
   return (
     <div className="space-y-4 animate-slide-up">
@@ -49,28 +88,28 @@ export default function Database() {
         <Card>
           <CardBody className="py-3">
             <p className="text-[10px] uppercase tracking-wider text-text-muted font-medium mb-1">Total Datasets</p>
-            <p className="text-xl font-mono font-semibold text-text-primary">{datasets.length}</p>
+            <p className="text-xl font-mono font-semibold text-text-primary">{healthRequest.data?.total_markets ?? 0}</p>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="py-3">
             <p className="text-[10px] uppercase tracking-wider text-text-muted font-medium mb-1">Total Rows</p>
-            <p className="text-xl font-mono font-semibold text-accent">14.8M</p>
+            <p className="text-xl font-mono font-semibold text-accent">{(healthRequest.data?.total_records ?? 0).toLocaleString('en-US')}</p>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="py-3 space-y-2">
             <div className="flex items-center justify-between">
               <p className="text-[10px] uppercase tracking-wider text-text-muted font-medium">Storage</p>
-              <p className="text-[10px] font-mono text-text-secondary">{storageUsed} / {storageTotal} GB</p>
+              <p className="text-[10px] font-mono text-text-secondary">{storageUsed.toFixed(2)} / {storageTotal} GB</p>
             </div>
             <ProgressBar value={storageUsed} max={storageTotal} color="accent" className="h-1.5" />
           </CardBody>
         </Card>
         <Card>
           <CardBody className="py-3">
-            <p className="text-[10px] uppercase tracking-wider text-text-muted font-medium mb-1">Syncing</p>
-            <p className="text-xl font-mono font-semibold text-warn">{datasets.filter(d => d.status === 'syncing').length}</p>
+            <p className="text-[10px] uppercase tracking-wider text-text-muted font-medium mb-1">Data Quality</p>
+            <p className="text-xl font-mono font-semibold text-warn">{qualityScore}%</p>
           </CardBody>
         </Card>
       </div>
@@ -82,9 +121,6 @@ export default function Database() {
             <div className="flex items-center gap-1">
               <Chip active={filter === 'all'} onClick={() => setFilter('all')}>All</Chip>
               <Chip active={filter === 'ohlcv'} onClick={() => setFilter('ohlcv')}>OHLCV</Chip>
-              <Chip active={filter === 'orderbook'} onClick={() => setFilter('orderbook')}>Orderbook</Chip>
-              <Chip active={filter === 'social'} onClick={() => setFilter('social')}>Social</Chip>
-              <Chip active={filter === 'onchain'} onClick={() => setFilter('onchain')}>On-chain</Chip>
             </div>
           </div>
           <button className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-accent/10 text-accent text-[11px] font-medium border border-accent/20 hover:bg-accent/20 transition-all cursor-pointer">
@@ -108,33 +144,31 @@ export default function Database() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {filtered.map(ds => (
-                <tr key={ds.id} className="hover:bg-bg-hover transition-colors">
+              {filtered.map((dataset) => (
+                <tr key={dataset.name} className="hover:bg-bg-hover transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <HardDrive size={12} className="text-text-muted" />
-                      <span className="font-mono font-medium text-text-primary">{ds.name}</span>
+                      <span className="font-mono font-medium text-text-primary">{dataset.name}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <Badge variant={ds.type === 'ohlcv' ? 'accent' : ds.type === 'orderbook' ? 'info' : ds.type === 'social' ? 'warning' : 'default'}>
-                      {ds.type}
-                    </Badge>
+                    <Badge variant="accent">{dataset.type}</Badge>
                   </td>
-                  <td className="px-4 py-3 font-mono text-text-secondary">{ds.symbol}</td>
-                  <td className="px-4 py-3 font-mono text-text-muted">{ds.interval}</td>
-                  <td className="px-4 py-3 font-mono text-right text-text-secondary tabular-nums">{ds.rows}</td>
-                  <td className="px-4 py-3 font-mono text-right text-text-secondary">{ds.size}</td>
-                  <td className="px-4 py-3 font-mono text-text-muted text-[10px]">{ds.coverage}</td>
+                  <td className="px-4 py-3 font-mono text-text-secondary">{dataset.symbol}</td>
+                  <td className="px-4 py-3 font-mono text-text-muted">{dataset.interval}</td>
+                  <td className="px-4 py-3 font-mono text-right text-text-secondary tabular-nums">{dataset.rows}</td>
+                  <td className="px-4 py-3 font-mono text-right text-text-secondary">{dataset.size}</td>
+                  <td className="px-4 py-3 font-mono text-text-muted text-[10px]">{dataset.coverage}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1.5">
-                      <div className={cn('w-1.5 h-1.5 rounded-full', ds.status === 'synced' ? 'bg-accent' : ds.status === 'syncing' ? 'bg-warn pulse-dot' : 'bg-text-muted')} />
-                      <span className={cn('text-[10px] font-mono', ds.status === 'synced' ? 'text-accent' : ds.status === 'syncing' ? 'text-warn' : 'text-text-muted')}>
-                        {ds.status}
+                      <div className={cn('w-1.5 h-1.5 rounded-full', dataset.status === 'synced' ? 'bg-accent' : 'bg-text-muted')} />
+                      <span className={cn('text-[10px] font-mono', dataset.status === 'synced' ? 'text-accent' : 'text-text-muted')}>
+                        {dataset.status}
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 font-mono text-text-muted text-[10px]">{formatRelativeTime(ds.lastUpdatedAt, nowMs)}</td>
+                  <td className="px-4 py-3 font-mono text-text-muted text-[10px]">{formatRelativeTime(dataset.lastUpdatedAt, nowMs)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-1">
                       <button className="p-1 rounded hover:bg-bg-hover text-text-muted hover:text-accent transition-all cursor-pointer" title="Sync">
@@ -147,6 +181,13 @@ export default function Database() {
                   </td>
                 </tr>
               ))}
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={10} className="px-4 py-8 text-center text-text-muted">
+                    No live datasets reported by `/data/health`.
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         </CardBody>
@@ -154,22 +195,22 @@ export default function Database() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Schema Preview - btc_1m_2y</CardTitle>
-          <Badge variant="accent">OHLCV</Badge>
+          <CardTitle>Ingestion Health</CardTitle>
+          <Badge variant={(healthRequest.data?.ingestion_status.ws_connected ?? false) ? 'accent' : 'warning'}>Live</Badge>
         </CardHeader>
-        <CardBody className="p-0">
-          <div className="font-mono text-[11px] text-text-secondary p-4 bg-bg-primary/50 rounded-b-lg">
-            <div className="space-y-0.5">
-              <p><span className="text-text-muted">CREATE TABLE</span> <span className="text-accent">btc_1m_2y</span> <span className="text-text-muted">(</span></p>
-              <p className="pl-6"><span className="text-info">timestamp</span> <span className="text-text-muted">BIGINT NOT NULL,</span></p>
-              <p className="pl-6"><span className="text-info">open</span> <span className="text-text-muted">DECIMAL(18,8) NOT NULL,</span></p>
-              <p className="pl-6"><span className="text-info">high</span> <span className="text-text-muted">DECIMAL(18,8) NOT NULL,</span></p>
-              <p className="pl-6"><span className="text-info">low</span> <span className="text-text-muted">DECIMAL(18,8) NOT NULL,</span></p>
-              <p className="pl-6"><span className="text-info">close</span> <span className="text-text-muted">DECIMAL(18,8) NOT NULL,</span></p>
-              <p className="pl-6"><span className="text-info">volume</span> <span className="text-text-muted">DECIMAL(24,8) NOT NULL,</span></p>
-              <p className="pl-6"><span className="text-warn">PRIMARY KEY</span> <span className="text-text-muted">(timestamp)</span></p>
-              <p><span className="text-text-muted">);</span></p>
+        <CardBody>
+          <div className="grid grid-cols-2 gap-4 font-mono text-[11px] text-text-secondary">
+            <div className="space-y-1">
+              <p>ws_connected: <span className={healthRequest.data?.ingestion_status.ws_connected ? 'text-accent' : 'text-loss'}>{String(healthRequest.data?.ingestion_status.ws_connected ?? false)}</span></p>
+              <p>rest_api_healthy: <span className={healthRequest.data?.ingestion_status.rest_api_healthy ? 'text-accent' : 'text-loss'}>{String(healthRequest.data?.ingestion_status.rest_api_healthy ?? false)}</span></p>
             </div>
+            <div className="space-y-1">
+              <p>parquet_writer_healthy: <span className={healthRequest.data?.ingestion_status.parquet_writer_healthy ? 'text-accent' : 'text-loss'}>{String(healthRequest.data?.ingestion_status.parquet_writer_healthy ?? false)}</span></p>
+              <p>duckdb_healthy: <span className={healthRequest.data?.ingestion_status.duckdb_healthy ? 'text-accent' : 'text-loss'}>{String(healthRequest.data?.ingestion_status.duckdb_healthy ?? false)}</span></p>
+            </div>
+          </div>
+          <div className="mt-4 text-[10px] text-text-muted">
+            Last ingestion: {healthRequest.data?.last_ingestion ? new Date(healthRequest.data.last_ingestion).toLocaleString('en-US') : 'n/a'}
           </div>
         </CardBody>
       </Card>

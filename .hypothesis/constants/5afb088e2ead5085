@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\routers\status.py
-# hypothesis_version: 6.151.6
-
-['/status', 'connected_markets', 'current_time', 'is_running', 'mode', 'started_at']

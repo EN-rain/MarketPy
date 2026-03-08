@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\marketplace\marketplace.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.5, 1.0, 180, 'asset_class', 'author', 'description', 'id', 'max_drawdown', 'methodology', 'name', 'risk_level', 'sharpe_ratio', 'total_return']

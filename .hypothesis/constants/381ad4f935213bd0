@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\coinpaprika_client.py
-# hypothesis_version: 6.151.6
-
-[0.0, 2.0, 300.0, 120, 300, '/global', 'USD', 'age_seconds', 'circulating_supply', 'coin_id', 'coin_id is required', 'is_stale', 'market_cap', 'max_supply', 'metrics', 'quotes', 'timestamp', 'total_supply', 'volume_24h']

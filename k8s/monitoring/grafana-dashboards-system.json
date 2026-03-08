@@ -1,0 +1,26 @@
+{
+  "title": "MarketPy System Metrics",
+  "timezone": "browser",
+  "panels": [
+    {
+      "title": "API Request Rate",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[5m])"
+        }
+      ]
+    },
+    {
+      "title": "API Error Rate",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total{status=~\"5..\"}[5m])"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}

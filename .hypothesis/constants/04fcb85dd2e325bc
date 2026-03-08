@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\dataset\scalers.py
-# hypothesis_version: 6.151.6
-
-['FeatureScaler', 'minmax', 'rb', 'robust', 'scaler', 'scaler_type', 'standard', 'wb']

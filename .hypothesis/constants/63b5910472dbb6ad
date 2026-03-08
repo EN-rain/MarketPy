@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\library_integration_config.py
-# hypothesis_version: 6.151.6
-
-[500.0, 1000.0, 5000.0, 1200, 30000, '***', '1', '10', '1000.0', '1200', '20', '30000', '50', '500.0', '5000.0', 'APP_ENV', 'BACKTEST_FILL_MODEL', 'DISCORD_WEBHOOK_URL', 'ENABLE_JSON_LOGS', 'EXCHANGE_RATE_LIMIT', 'EXCHANGE_TIMEOUT_MS', 'EXCHANGE_TYPE', 'FEATURE_SCALER_TYPE', 'INDICATOR_LIBRARY', 'M2', 'MAX_DAILY_LOSS', 'MAX_TOTAL_EXPOSURE', 'after', 'api_key', 'api_secret', 'auto', 'binance', 'development', 'discord_webhook_url', 'event_driven', 'exchange', 'mixed', 'monitoring', 'on', 'passphrase', 'standard', 'tree', 'true', 'yes']

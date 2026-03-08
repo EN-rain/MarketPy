@@ -32,6 +32,7 @@ class FeatureImportanceTracker:
     def __init__(self, output_dir: str = "models/feature_importance") -> None:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.history_path = self.output_dir / "importance_history.json"
 
     @staticmethod
     def _normalize(scores: dict[str, float]) -> dict[str, float]:
@@ -126,3 +127,37 @@ class FeatureImportanceTracker:
         if not path.exists():
             return None
         return json.loads(path.read_text(encoding="utf-8"))
+
+    def append_history(self, result: FeatureImportanceResult) -> None:
+        payload: dict[str, list[dict[str, Any]]]
+        if self.history_path.exists():
+            payload = json.loads(self.history_path.read_text(encoding="utf-8"))
+        else:
+            payload = {}
+        payload.setdefault(result.model_id, []).append(
+            {
+                "computed_at": result.computed_at.isoformat(),
+                "scores": result.scores,
+            }
+        )
+        # Cap history to keep file bounded.
+        payload[result.model_id] = payload[result.model_id][-200:]
+        self.history_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    def detect_importance_drift(self, model_id: str, threshold: float = 0.25) -> dict[str, Any]:
+        if not self.history_path.exists():
+            return {"alert": False, "changes": {}}
+        payload = json.loads(self.history_path.read_text(encoding="utf-8"))
+        history = payload.get(model_id, [])
+        if len(history) < 2:
+            return {"alert": False, "changes": {}}
+        prev = history[-2]["scores"]
+        curr = history[-1]["scores"]
+        changes: dict[str, float] = {}
+        for feature in set(prev) | set(curr):
+            before = float(prev.get(feature, 0.0))
+            after = float(curr.get(feature, 0.0))
+            delta = after - before
+            if abs(delta) >= threshold:
+                changes[feature] = delta
+        return {"alert": bool(changes), "changes": changes}

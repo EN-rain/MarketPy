@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\openclaw\market_monitor.py
-# hypothesis_version: 6.151.6
-
-[0.0, 0.98, 1.0, 1.02, 50.0, 120, '1h', '; ', 'Condition added', 'Condition triggered', 'ascending_channel', 'average_volume', 'average_volume_20', 'baseVolume', 'bearish', 'bullish', 'buy', 'channel_id', 'condition_id', 'data', 'descending_channel', 'error', 'execute_order', 'interval_seconds', 'last', 'mid', 'notify', 'open', 'pattern', 'previous_price', 'price', 'quantity', 'range', 'resistance', 'rsi', 'run_analysis', 'side', 'summary', 'support', 'symbol', 'trend', 'unknown', 'user_id', 'volume']

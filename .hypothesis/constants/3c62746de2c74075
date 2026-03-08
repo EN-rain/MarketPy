@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\dataset\builder.py
-# hypothesis_version: 6.151.6
-
-[0.0, 1000, '*.jsonl', '--bar-size', '--output-dir', '--raw-dir', '5m', 'E', 'No bars generated', 'Raw JSONL directory', 'UTC', '__main__', '_recorded_at', 'ask', 'asset_id', 'bars.parquet', 'best_ask', 'best_bid', 'best_bid_ask', 'bid', 'close', 'event_timestamp', 'event_ts', 'event_type', 'first', 'high', 'last_trade_price', 'left', 'low', 'mid', 'open', 'parquet', 'price', 'price_change', 'price_changes', 'raw', 'side', 'size', 'spread', 'time', 'timestamp', 'timestamp_ms', 'token_id', 'trade_count', 'ts', 'utf-8', 'volume']

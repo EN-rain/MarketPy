@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketpy-worker-training
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: marketpy-worker-training
+  template:
+    metadata:
+      labels:
+        app: marketpy-worker-training
+    spec:
+      containers:
+      - name: worker
+        image: marketpy/worker:latest
+        command: ["python", "-m", "backend.ml.retraining"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketpy-worker-drift
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: marketpy-worker-drift
+  template:
+    metadata:
+      labels:
+        app: marketpy-worker-drift
+    spec:
+      containers:
+      - name: worker
+        image: marketpy/worker:latest
+        command: ["python", "-m", "backend.ml.drift_detection"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: marketpy-worker-ingestion
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: marketpy-worker-ingestion
+  template:
+    metadata:
+      labels:
+        app: marketpy-worker-ingestion
+    spec:
+      containers:
+      - name: worker
+        image: marketpy/worker:latest
+        command: ["python", "-m", "backend.ingest.recorder"]

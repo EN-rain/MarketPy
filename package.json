@@ -1,0 +1,25 @@
+{
+  "name": "marketpy",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Crypto trading simulator with backtesting, paper trading, and ML research tools",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "frontend:install": "cd frontend && npm install",
+    "frontend:build": "cd frontend && npm run build",
+    "frontend:start": "cd frontend && npm run start",
+    "backend:start": "python start_backend.py",
+    "test:backend": "pytest backend/tests -v",
+    "test:frontend": "cd frontend && npm run test",
+    "lint:frontend": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "crypto",
+    "trading",
+    "backtesting",
+    "machine-learning",
+    "paper-trading"
+  ],
+  "author": "",
+  "license": "ISC"
+}

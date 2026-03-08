@@ -1,52 +1,67 @@
-"""Unit tests for realtime ConnectionManager."""
+from __future__ import annotations
 
 import pytest
 
-from backend.app.models.realtime_config import BackpressureConfig, RateLimiterConfig
-from backend.app.realtime.backpressure_handler import BackpressureHandler
-from backend.app.realtime.connection_manager import ConnectionManager
-from backend.app.realtime.health_monitor import HealthMonitor
-from backend.app.realtime.rate_limiter import RateLimiter
+from backend.ingest.exchanges.base import ExchangeAdapter
+from backend.ingest.exchanges.manager import ConnectionManager
 
 
-class _FakeWebSocket:
-    def __init__(self):
-        self.accepted = False
-        self.messages = []
+class FakeAdapter(ExchangeAdapter):
+    def __init__(self, name: str, *, failures_before_success: int = 0) -> None:
+        super().__init__(name, rate_limit_per_second=10)
+        self.failures_before_success = failures_before_success
 
-    async def accept(self):
-        self.accepted = True
+    async def connect(self) -> None:
+        if self.failures_before_success > 0:
+            self.failures_before_success -= 1
+            raise RuntimeError("temporary")
+        self.health.mark_connected()
 
-    async def send_json(self, payload):
-        self.messages.append(payload)
+    async def disconnect(self) -> None:
+        self.health.mark_disconnected()
 
+    async def subscribe_order_book(self, symbol: str):
+        if False:
+            yield None
 
-@pytest.fixture
-def manager():
-    return ConnectionManager(
-        rate_limiter=RateLimiter(RateLimiterConfig(max_messages_per_second=100, burst_size=100)),
-        backpressure_handler=BackpressureHandler(BackpressureConfig()),
-        health_monitor=HealthMonitor(),
-    )
+    async def subscribe_trades(self, symbol: str):
+        if False:
+            yield None
+
+    async def place_order(self, order):
+        return order
+
+    async def get_ticker(self, symbol):
+        raise NotImplementedError
+
+    async def get_positions(self):
+        return []
+
+    async def get_balances(self):
+        return []
 
 
 @pytest.mark.asyncio
-async def test_connect_disconnect(manager):
-    ws = _FakeWebSocket()
-    await manager.connect(ws, "c1")
-    assert ws.accepted is True
-    assert "c1" in manager.active_client_ids
-    await manager.disconnect("c1")
-    assert "c1" not in manager.active_client_ids
+async def test_connection_manager_connects_and_emits_status() -> None:
+    manager = ConnectionManager(health_check_interval_seconds=0)
+    events: list[tuple[str, bool]] = []
+    manager.add_listener(lambda name, status: events.append((name, status)))
+    manager.add_exchange("binance", FakeAdapter("binance"))
+    manager.add_exchange("coinbase", FakeAdapter("coinbase"))
+
+    await manager.connect_all()
+
+    assert manager.statuses() == {"binance": True, "coinbase": True}
+    assert ("binance", True) in events
+    assert ("coinbase", True) in events
 
 
 @pytest.mark.asyncio
-async def test_broadcast_sends_to_all(manager):
-    ws1 = _FakeWebSocket()
-    ws2 = _FakeWebSocket()
-    await manager.connect(ws1, "a")
-    await manager.connect(ws2, "b")
-    await manager.broadcast({"type": "x"}, is_critical=False)
-    assert len(ws1.messages) == 1
-    assert len(ws2.messages) == 1
+async def test_connection_manager_reconnects_disconnected_adapters() -> None:
+    manager = ConnectionManager(health_check_interval_seconds=0)
+    adapter = FakeAdapter("kraken", failures_before_success=1)
+    manager.add_exchange("kraken", adapter)
 
+    await manager.monitor_connections(iterations=1)
+
+    assert manager.statuses()["kraken"] is True

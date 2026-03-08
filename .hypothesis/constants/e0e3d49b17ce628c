@@ -1,4 +1,0 @@
-# file: C:\Users\LENOVO\Desktop\MarketPy\backend\app\integrations\mempool_client.py
-# hypothesis_version: 6.151.6
-
-[0.0, 2.0, 1000000, '/fees/mempool-blocks', '/fees/recommended', '/mining/hashrate/3d', 'BTC', 'blockVSize', 'difficulty', 'fee_rate_sat_vb', 'hash_rate_eh_s', 'hashrates', 'medianFee', 'mempool_size_mb', 'symbol', 'timestamp']
